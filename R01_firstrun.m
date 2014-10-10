@@ -1,14 +1,14 @@
 % filename='Jessica_data.mat';
 %filename='oxford_2014.mat';
 %load(filename)
-%close all
+close all
 %s=rmfield(s,'width');
 %s=rmfield(s,'timept');
 tb=100;
 ta=500;
 gauss_size=30;
 last_bin=250;
-for k=2%1:size(s,2)
+for k=1:size(s,2)
     if length(s(k).Pulses)>0
         s(k).Pulses=s(k).Pulses-16.92*ones(size(s(k).Pulses));
         firerate=s(k).FireRate;
@@ -50,17 +50,17 @@ for k=2%1:size(s,2)
             axis([0 1000*s(k).times(end) -2 2])
             subplot(3,3,[3,6])
             isigraph(1000*s(k).times(cluster),0,1000*s(k).times(cluster),5,last_bin);
-            xlim([0 last_bin])
+            xlim([0 20])
             %plot(time,s(k).waveforms(cluster,:))
             %title('All Waveforms')
-            figure
-            psth1block(s(k).Pulses,tb+gauss_size,ta+gauss_size,1000*s(k).times(cluster),gauss_size,0);
-            title(sprintf('%s Cluster: %d',s(k).Name,g))
-            xlim([-tb ta])
+%             figure
+%             psth1block(s(k).Pulses,tb+gauss_size,ta+gauss_size,1000*s(k).times(cluster),gauss_size,0);
+%             title(sprintf('%s Cluster: %d',s(k).Name,g))
+%             xlim([-tb ta])
             end
         end
     else
-    index=regexp(s(k).Name,'_B');
+%    index=regexp(s(k).Name,'_B');
 %     if size(index)<=0
 %         index=regexp(s(k).Name,'_C');
 %     end
