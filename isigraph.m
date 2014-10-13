@@ -1,4 +1,4 @@
-function[isi]=isigraph(t_clust,t_min,t_max,bin,last_bin)
+function[N,isi]=isigraph(t_clust,t_min,t_max,bin,last_bin)
 %%ISI Values
 isi_range=find(t_clust>t_min & t_clust<=t_max);
 
