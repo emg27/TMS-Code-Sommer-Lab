@@ -52,7 +52,7 @@ for k=1:size(s,2)
             subplot(3,3,[3,6])
             isi=isigraph(1000*s(k).times(cluster),0,1000*s(k).times(cluster(end)),3,last_bin);
             xlabel([num2str(100*isi(1)/sum(isi)) '% multiunit activity'])
-            xlim([0 last_bin])
+            xlim([0 50])%last_bin])
             %plot(time,s(k).waveforms(cluster,:))
             %title('All Waveforms')
 %             figure
