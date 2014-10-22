@@ -4,16 +4,17 @@
 close all
 %s=rmfield(s,'width');
 %s=rmfield(s,'timept');
+
 tb=100;
 ta=500;
 gauss_size=30;
 last_bin=250;
 for k=1:size(s,2)
-    if (length(s(k).Pulses)>0 & size(s(k).Intensity,1)>0 &...
+    if (length(s(k).Pulses)>0 & length(s(k).Pulses)<=25 & size(s(k).Intensity,1)>0 &...
             s(k).Intensity(1)==10 & strcmp(s(k).Stim(1),'Stim')==1)
         Pulses=s(k).Pulses+16.92*ones(size(s(k).Pulses));
         firerate=s(k).FireRate;
-        for g=1%:max(s(k).clusters)
+        for g=1:max(s(k).clusters)
             cluster=find(s(k).clusters==g);
             if length(cluster)>0
             figure;
@@ -26,6 +27,9 @@ for k=1:size(s,2)
             stdW=std(s(k).waveforms(cluster,:));
             t1= linspace(-1,1.5,length(meanW));%1000*(0:1:length(meanW)-1)/s(k).FireRate;
             time=linspace(-1,1.5,1000);
+            if length(meanW)<=1
+                continue
+            end
             meanW=spline(t1,meanW,time);
             stdW=spline(t1,stdW,time);
             plot_variance(time,meanW+stdW,meanW-stdW,'b');
@@ -51,8 +55,11 @@ for k=1:size(s,2)
             axis([0 1000*s(k).times(end) -2 2])
             subplot(3,3,[3,6])
             isi=isigraph(1000*s(k).times(cluster),0,1000*s(k).times(cluster(end)),3,last_bin);
-            xlabel([num2str(isi(1)/
-            xlim([0 last_bin])
+            title(['Position in Structure: ' num2str(k)])
+            xlabel([num2str(100*isi(1)/sum(isi)) '% multiunit activity'])
+            xlim([0 50])%last_bin])
+            if 100*isi(1)/sum(isi)<8
+                base_save=
             %plot(time,s(k).waveforms(cluster,:))
             %title('All Waveforms')
 %             figure
