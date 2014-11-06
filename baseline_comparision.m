@@ -12,7 +12,7 @@ base_aft=[];
 
 %Create a file for each intensity
 intensity=unique(base_save(3,:));
-for h=1:size(intensity,2)
+for h=[1 5 7 9]%:size(intensity,2)
     inten_pos=find(base_save(3,:)==intensity(h));
     pop(h,:)=size(inten_pos);
     base_inten=base_save(:,inten_pos);
@@ -31,20 +31,22 @@ for h=1:size(intensity,2)
         fire_bef=num_spike_bef./(t_period/1000);
         fire_aft=num_spike_aft./(t_period/1000);
 %         base_bef=[base_bef mean(fire_bef(1))];
-%         base_aft=[base_aft mean(fire_aft(1))];
+%         base_aft=[base_aft mean(fire_aft(1))]; 
         base_bef(1:length(fire_bef),n)=fire_bef;
         base_aft(1:length(fire_bef),n)=fire_aft;
     end
     figure
-    plot(base_bef(1,:),base_aft(1,:),'o')
+    plot(base_bef(1,:),base_aft(1,:),'o','MarkerFaceColor',[0 0 1])
     hold on
-    unitx=linspace(min(min(base_bef)),ceil(1.1*max(max(base_bef))),1000);
+    unitx=linspace(min(min(base_bef(1,:))),ceil(1.1*max(max(base_bef(1,:)))),1000);
     plot(unitx,unitx,'k-')
     %xlim([-ceil(1.1*max(log10(base_bef)))  ceil(1.1*max(log10(base_bef)))])
     xlabel(['Scale Baseline ' num2str(t_period) ' Before TMS Pulse']);
     ylabel(['Baseline ' num2str(t_period) ' After TMS Pulse']);
     title(['Population at Intensity ' num2str(intensity(h)) '%, Cell Count=' num2str(pop(h,2))]);
     figure
-    hist(base_aft(1,:)-base_bef(1,:))
+    base_change=base_aft(1,:)-base_bef(1,:);
+    hist(base_change,linspace(min(base_change),max(base_change),10))
+    
     title(['Population at Intensity ' num2str(intensity(h)) '%, Cell Count=' num2str(pop(h,2))]);
 end
