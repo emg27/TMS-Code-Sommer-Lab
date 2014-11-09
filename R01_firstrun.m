@@ -5,15 +5,15 @@ close all
 %s=rmfield(s,'width');
 %s=rmfield(s,'timept');
 
-tb=100;
-ta=500;
+tb=50;
+ta=50;
 gauss_size=30;
 last_bin=250;
 base_save=[]
 for k=1:size(s,2)
-    if (length(s(k).Pulses)>0 & length(s(k).Pulses)<=25 & size(s(k).Intensity,1)>0 &...
-            strcmp(s(k).Stim(1),'Stim')==1 & mean(diff(s(k).Pulses)./1000)>4)
-        Pulses=s(k).Pulses+16.92*ones(size(s(k).Pulses));
+    if (length(s(k).Pulses)>0 & length(s(k).Pulses)<=25)% & size(s(k).Intensity,1)>0 &...
+         %   strcmp(s(k).Stim(1),'Stim')==1 & mean(diff(s(k).Pulses)./1000)>4)
+        Pulses=s(k).Pulses;%+16.92*ones(size(s(k).Pulses));
         firerate=s(k).FireRate;
         for g=1:max(s(k).clusters)
             cluster=find(s(k).clusters==g);
@@ -59,9 +59,9 @@ for k=1:size(s,2)
             title(['Position in Structure: ' num2str(k)])
             xlabel([num2str(100*isi(1)/sum(isi)) '% multiunit activity'])
             xlim([0 50])%last_bin])
-            if 100*isi(1)/sum(isi)<8 & ~isnan(100*isi(1)/sum(isi))
-                base_save=[base_save [k; g; s(k).Intensity(1)]];
-            end
+%             if 100*isi(1)/sum(isi)<8 & ~isnan(100*isi(1)/sum(isi))
+%                 base_save=[base_save [k; g; s(k).Intensity(1)]];
+%             end
             %plot(time,s(k).waveforms(cluster,:))
             %title('All Waveforms')
 %             figure
