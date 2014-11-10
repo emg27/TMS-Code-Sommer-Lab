@@ -43,7 +43,7 @@ for h=1:9;%size(intensity,2)
 %             plot(cell2mat(wave(n,2)),cell2mat(wave(n,1)))
 %             xlabel(sprintf('Fire Before: %d Fire After: %d Diff: %d',...
 %                 base_bef(1,n), base_aft(1,n), base_aft(1,n)-base_bef(1,n)))
-%         else
+%           else
 %             close(rast)
 %         end
     end
