@@ -6,7 +6,7 @@ file='base_save_SFN.mat';
 load(file);
 
 %set the parameter
-t_period=5000; %Time period for average firing rate before and after
+t_period=300; %Time period for average firing rate before and after
 base_bef=[];
 base_aft=[];
 
@@ -48,14 +48,14 @@ for h=1:9;%size(intensity,2)
 %         end
     end
     figure
-    plot(base_bef(1,:),base_aft(1,:),'o','MarkerFaceColor',[0 0 1])
+    plot(base_bef(1,base_bef(1,:)>0),base_aft(1,base_bef(1,:)>0),'o','MarkerFaceColor',[0 0 1])
     hold on
     unitx=linspace(min(min(base_bef(1,:))),ceil(1.1*max(max(base_bef(1,:)))),1000);
     plot(unitx,unitx,'k-')
     %xlim([-ceil(1.1*max(log10(base_bef)))  ceil(1.1*max(log10(base_bef)))])
     xlabel(['Scale Baseline ' num2str(t_period) ' Before TMS Pulse']);
     ylabel(['Baseline ' num2str(t_period) ' After TMS Pulse']);
-    title(['Population at Intensity ' num2str(intensity(h)) '%, Cell Count=' num2str(pop(h,2))]);
+    title(['Population at Intensity ' num2str(intensity(h)) '%, Cell Count=' num2str(length(base_bef(1,base_bef(1,:)>0)))]);
     base_change=base_aft(1,:)-base_bef(1,:);
 %     pwave=find(base_change>50);
 %     if size(pwave)>0
@@ -66,35 +66,37 @@ for h=1:9;%size(intensity,2)
 %             title(['Intensity: ' num2str(h*10) ' n=' num2str(z)])
 %         end
 %     end
-    figure
-    plot(base_change,'go','MarkerFaceColor',[0 1 0])
-    hold on
-    plot(base_aft(1,:),'bo','MarkerFaceColor',[0 0 1])
-    plot(base_bef(1,:),'ro','MarkerFaceColor',[1 0 0])
-    legend('Difference','After','Before',0)
-    title(['Population at Intensity ' num2str(intensity(h)) '%, Cell Count=' num2str(pop(h,2))]);
+
+%     figure
+%     plot(base_change,'go','MarkerFaceColor',[0 1 0])
+%     hold on
+%     plot(base_aft(1,:),'bo','MarkerFaceColor',[0 0 1])
+%     plot(base_bef(1,:),'ro','MarkerFaceColor',[1 0 0])
+%     legend('Difference','After','Before',0)
+%     title(['Population at Intensity ' num2str(intensity(h)) '%, Cell Count=' num2str(base_bef(1,base_bef(1,:)>0)))]);
     
     figure
     %hist(base_change,linspace(min(base_change),max(base_change),10))
-    edge=linspace(-50,50,21);
-    [N,Bin]=histc(base_change,edge);
-    bar(edge,N./max(N),'histc')
-    axis([min(edge) max(edge) 0 1.1])
-    title(['Population at Intensity ' num2str(intensity(h)) '%, Cell Count=' num2str(pop(h,2))]);
+    edge=linspace(-1,1,11);
+    %[N,Bin]=histc(base_change./(base_bef(1,:)+.0001),edge);
+    hist(base_aft(1,base_bef(1,:)>0)./(base_bef(1,base_bef(1,:)>0)));
+    %bar(edge,N,'histc')
+    %xlim([min(edge) max(edge)])
+    title(['Population at Intensity ' num2str(intensity(h)) '%, Cell Count=' num2str(length(base_bef(1,base_bef(1,:)>0)))]);
     
-    figure
-    subplot(3,1,1)
-    plot(1:25,nanmean(base_aft-base_bef,2),'o-')
-    hold on
-    plot(1:25,nanmedian(base_aft-base_bef,2),'ro-')
-    axis([0 20 -8 8])
-    title(['Population at Intensity ' num2str(intensity(h)) '%, Cell Count=' num2str(pop(h,2))]);
-    subplot(3,1,2)
-    plot(1:25,base_aft-base_bef,'o')
-    hold on
-    plot(1:25,zeros(size(1:25)),'k-')
-    xlim([0 20])
-    subplot(3,1,3)
-    plot(1:24,diff(base_aft-base_bef),'o')
-    xlim([0 20])
+%     figure
+%     subplot(3,1,1)
+%     plot(1:25,nanmean(base_aft-base_bef,2),'o-')
+%     hold on
+%     plot(1:25,nanmedian(base_aft-base_bef,2),'ro-')
+%     axis([0 20 -8 8])
+%     title(['Population at Intensity ' num2str(intensity(h)) '%, Cell Count=' num2str(pop(h,2))]);
+%     subplot(3,1,2)
+%     plot(1:25,base_aft-base_bef,'o')
+%     hold on
+%     plot(1:25,zeros(size(1:25)),'k-')
+%     xlim([0 20])
+%     subplot(3,1,3)
+%     plot(1:24,diff(base_aft-base_bef),'o')
+%     xlim([0 20])
 end
