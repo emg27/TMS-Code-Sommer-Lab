@@ -14,11 +14,11 @@ wave_save=[];
 z=1;
 for k=1:size(s,2)
     count=k;
-    if (length(s(k).Pulses)>0 & length(s(k).Pulses)<=25 & size(s(k).Intensity,1)>0 &...
-            strcmp(s(k).Stim(1),'Stim')==1 & mean(diff(s(k).Pulses)./1000)>4)
+    if (length(s(k).Pulses)>0 &  size(s(k).Intensity,1)>0 &... length(s(k).Pulses)<=25 &
+            strcmp(s(k).Stim(1),'Stim')==1 & mean(diff(s(k).Pulses)./1000)<4)% & mean(diff(s(k).Pulses)./1000)>4)
         Pulses=s(k).Pulses;%+16.92*ones(size(s(k).Pulses));
         firerate=s(k).FireRate;
-        for g=1:max(s(k).clusters)-1
+        for g=1:max(s(k).clusters)
             cluster=find(s(k).clusters==g);
             if length(cluster)>0
             figure;
