@@ -1,8 +1,8 @@
 function[spk_d,trl_fr,bin_start_times,baseline,mean_trl_fr]=psth1block(pulse,time_b,time_a,cluster,gauss_size,b_correct)
 
-bin_size=10;
-gauss_size=gauss_size/1000;
-gau_time_vec= -2*gauss_size:.001:2*gauss_size;
+bin_size=1;%10;
+gauss_size=gauss_size;%/1000;
+gau_time_vec=-2*gauss_size:1:2*gauss_size;% -2*gauss_size:.001:2*gauss_size;
 sigma=gauss_size; mu=0;
 gaus_ker1 = normpdf(gau_time_vec,mu,sigma).*bin_size;
 gaus_ker=gaus_ker1/sum(gaus_ker1);
@@ -25,14 +25,14 @@ for n=1:length(pulse)
     trl_fr(n,:)=spk_density_fxn./bin_size;
     
    if b_correct==0
-       baseline=mean(trl_fr(n,bin_start_times<-5));
-       trl_fr(n,:)=trl_fr(n,:)-baseline;
+       baseline(n)=mean(trl_fr(n,bin_start_times<-5));
+       trl_fr(n,:)=trl_fr(n,:)-baseline(n);
     end
 end
 mean_trl_fr=mean(trl_fr);
 std_fr=std(mean_trl_fr)./sqrt(size(trl_fr,1));
 
 spk_d=plot(bin_start_times, mean_trl_fr, 'b', 'LineWidth',2.5); hold on
-plot(bin_start_times, 0, 'k--')
+%plot(bin_start_times, 0, 'k--')
     
     
