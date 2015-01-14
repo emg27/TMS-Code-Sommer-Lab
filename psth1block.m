@@ -13,7 +13,7 @@ for n=1:length(pulse)
     place=find(cluster>(TMS_art-time_b) & cluster<(TMS_art+time_a));
     spks=cluster(place)-TMS_art;
 
-    bin_size=1;
+   % bin_size=1;
     bin_start_times=-time_b:bin_size:time_a;
     binned_spks=zeros(length(bin_start_times),1);
     
@@ -21,13 +21,18 @@ for n=1:length(pulse)
         binned_spks(bin_i)=sum(spks>=(-time_b+bin_size*(bin_i-1)) &...
             spks<(-time_b+bin_size*bin_i));
     end
+    if b_correct==1
+        binned_spks(bin_start_times==0)=0;
+    end
     spk_density_fxn=conv(binned_spks,gaus_ker,'same');
     trl_fr(n,:)=spk_density_fxn./bin_size;
     
    if b_correct==0
        baseline(n)=mean(trl_fr(n,bin_start_times<-5));
        trl_fr(n,:)=trl_fr(n,:)-baseline(n);
-    end
+   else
+       baseline=NaN;
+   end
 end
 mean_trl_fr=mean(trl_fr);
 std_fr=std(mean_trl_fr)./sqrt(size(trl_fr,1));

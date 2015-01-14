@@ -15,7 +15,7 @@ z=1;
 for k=1:size(s,2)
     count=k;
     if (length(s(k).Pulses)>0 &  size(s(k).Intensity,1)>0 &... length(s(k).Pulses)<=25 &
-            strcmp(s(k).Stim(1),'Stim')==1 & mean(diff(s(k).Pulses)./1000)<4)% & mean(diff(s(k).Pulses)./1000)>4)
+            strcmp(s(k).Stim(1),'Stim')==1) %& mean(diff(s(k).Pulses)./1000)<4)% & mean(diff(s(k).Pulses)./1000)>4)
         Pulses=s(k).Pulses;%+16.92*ones(size(s(k).Pulses));
         firerate=s(k).FireRate;
         for g=1:max(s(k).clusters)
@@ -62,7 +62,7 @@ for k=1:size(s,2)
             title(['Position in Structure: ' num2str(k)])
             xlabel([num2str(100*isi(1)/sum(isi)) '% multiunit activity'])
             xlim([0 50])%last_bin])
-            if 100*isi(1)/sum(isi)<8 & ~isnan(100*isi(1)/sum(isi))
+            if 100*isi(1)/sum(isi)<8 & ~isnan(100*isi(1)/sum(isi)) & size(isi(isi~=0),1)>1
                 temp(1)=k;
                 temp(2)=g;
                 temp(3)=str2num(s(k).Intensity{1});

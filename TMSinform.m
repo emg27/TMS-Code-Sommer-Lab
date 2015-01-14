@@ -1,4 +1,6 @@
 %load('SFN_TMS.mat')
+% [File,PathName] = uiputfile('*.mat')
+% load([PathName File])
 
 %%Create FileName 
 dash=strfind(Date,'/');

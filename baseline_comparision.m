@@ -13,7 +13,7 @@ base_aft=[];
 dose=figure;
 %Create a file for each intensity
 intensity=unique(base_save(3,:));
-for h=1:size(intensity,2)-1
+for h=[1 5 7 9]%1:size(intensity,2)-1
     inten_pos=find(base_save(3,:)==intensity(h));
     pop(h,:)=size(inten_pos);
     base_inten=base_save(:,inten_pos);
@@ -130,7 +130,7 @@ for h=1:size(intensity,2)-1
     hist(base_bef(pulse,:),15);
 %     [Hbef, pvbef]=ttest(base_bef(pulse,:));
 %     [Hbef, pvbef]=ttest(base_last-base_bef(pulse,:));%,normpdf(length(base_bef(pulse,:))));
-[pvbef, Hbef]=signrank(base_bef(pulse,:),zeros(size(base_change(pulse,:))));
+[pvbef, Hbef]=signrank(base_bef(pulse,:),zeros(size(base_bef(pulse,:))));
     ylim([0 60])
     %set(f,'FaceColor','g');
 %     axis([min(edge2) max(edge2) 0 30])
@@ -176,12 +176,13 @@ for neuron=1:size(base_bef,2)
     
     [rho_diff,p_diff]=corr(num_pulse_diff',base_pulse_diff,'type','Spearman')
     
-    if h==7 & neuron==34%(neuron==9 | neuron==44 | neuron==40) % p_diff<=0.05
+    if h==5 & neuron==9%(neuron==9 | neuron==44 | neuron==40) % p_diff<=0.05
         figure
         subplot(2,1,1)
         plot(base_pulse_diff,'o')
         title(['Population at Intensity ' num2str(intensity(h)) '%, Cell=' ...
             num2str(neuron) ' of ' num2str(size(base_bef,2))]);
+        xlabel(['Slope= ' num2str(baseregressdiff')])
         hold on
         plot(num_pulse_diff,X_diff*baseregressdiff,'r-')
         subplot(2,1,2)
@@ -200,7 +201,9 @@ for neuron=1:size(base_bef,2)
         all_cell_regress_bef=[all_cell_regress_bef [baseregressbef; length(num_pulse_bef); 0]];
     end
 end
-
+[pvbefslp, Hbefslp]=signrank(all_cell_regress_bef(1,:),zeros(size(all_cell_regress_bef(1,:))));
+[pvdifslp, Hdifslp]=signrank(all_cell_regress_diff(1,:),zeros(size(all_cell_regress_diff(1,:))));
+[pvbef, Hbef]=signrank(base_bef(pulse,:),zeros(size(base_change(pulse,:))));
 figure
 for k=1:size(all_cell_regress_bef,2)
 subplot(2,1,1)
@@ -209,7 +212,7 @@ plot(k,all_cell_regress_bef(1,k),'o',...
     'MarkerFaceColor',[all_cell_regress_bef(4,k) 0 0])
  hold on
 title(sprintf('Population Regress Slope for the Baseline %d ms before a TMS pulse at Intensity %d', t_period,intensity(h)))
-xlabel(['Cell Count= ' num2str(size(base_bef,2))])
+xlabel(['Cell Count= ' num2str(size(base_bef,2)) ' p=' num2str(pvbefslp) ' H=' num2str(Hbefslp)])
 %ylim([-2.5 4])
 
 subplot(2,1,2)
@@ -223,6 +226,7 @@ plot(k,all_cell_regress_diff(1,k),'o',...
     'Color',[0 0 all_cell_regress_diff(4,k)],...
     'MarkerFaceColor',[0 0 all_cell_regress_diff(4,k)])
 title('Difference Between before and after')
+xlabel(['Cell Count= ' num2str(size(base_bef,2)) ' p=' num2str(pvdifslp) ' H=' num2str(Hdifslp)])
 %  hold on
 % 
 %     
@@ -235,8 +239,10 @@ end
 
 subplot(2,1,1)
 plot(0:size(base_bef,2)+1,zeros(size(base_bef,2)+2,1),'g-')
+ylim([-2 4])
 subplot(2,1,2)
 plot(0:size(base_bef,2)+1,zeros(size(base_bef,2)+2,1),'g-')
+ylim([-10 5])
 % subplot(2,2,3)
 % rgslope=all_cell_regress_diff(1,:);
 % plot(0:size(base_bef,2)+1,zeros(size(base_bef,2)+2,1),'g-')
