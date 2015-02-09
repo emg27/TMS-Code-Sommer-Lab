@@ -40,7 +40,7 @@ for k=g+1:g+size(listing,1);
     end
     if exist(['V' file '_Ch32']) & eval(['size(V' file '_Ch32.times,1)>0'])
         eval(['time_trig=V' file '_Ch32.times']);
-        time_trig=time_trig+0.0197*ones(length(time_trig),1);
+        time_trig=time_trig;%+0.0197*ones(length(time_trig),1);
         s(k).Pulses=1000*time_trig;
     else
         figure(1)
