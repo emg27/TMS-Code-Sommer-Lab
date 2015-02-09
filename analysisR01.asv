@@ -5,10 +5,10 @@ clear; close all;
 
 %fileloc: This is the location of the .mat files, change this folder
 %location to where the .mat files are.
-[fileloc]=uigetdir; %Change to where you stored the .mat files
-%newfilename='Jason_data'; %Change to the desired name you want save with.
-[newfilename,saveloc]=uiputfile('*.mat'); %Change to the location where you want to save to
-listing=dir([fileloc '\*.mat']); 
+fileloc=['Jessica\'] %Change to where you stored the .mat files
+newfilename='Jason_data'; %Change to the desired name you want save with.
+saveloc=['']; %Change to the location where you want to save to
+listing=dir([fileloc '*.mat']); 
 
 if exist([newfilename '.mat'],'file')
     load([newfilename '.mat']);
@@ -19,7 +19,7 @@ else
 end
 for k=g+1:g+size(listing,1);
     file=listing(k).name(1:end-4);
-    load([fileloc '\' file '.mat'],'-regexp', '_Ch');
+    load([fileloc file '.mat'],'-regexp', '_Ch');
     %I'm going to assume that all waveforms are in Ch4, Ch2 or Ch3
     if exist(['V' file '_Ch4'])
        eval(['data=V' file '_Ch4'])
@@ -67,4 +67,4 @@ for k=g+1:g+size(listing,1);
     clear -regexp '_Ch'
 end
 
-save([saveloc newfilename],'s')
+save([saveloc newfilename '.mat'],'s')
