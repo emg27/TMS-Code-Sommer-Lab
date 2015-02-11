@@ -1,6 +1,7 @@
 % filename='Jessica_data.mat';
-%filename=uigetfile('*.mat')%'oxford_2014.mat';
-%load(filename)
+clear
+[filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
+load([pathname filename])
 close all
 %s=rmfield(s,'width');
 %s=rmfield(s,'timept');
@@ -14,7 +15,7 @@ wave_save=[];
 z=1;
 for k=1:size(s,2)
     count=k;
-    if (length(s(k).Pulses)>0 )%&  size(s(k).Intensity,1)>0 &... length(s(k).Pulses)<=25 &
+    if (length(s(k).Pulses)>0 ) & median(diff(s(k).Pulses)./1000)>4%&  size(s(k).Intensity,1)>0 &... length(s(k).Pulses)<=25 &
             %strcmp(s(k).Stim(1),'Stim')==1) %& mean(diff(s(k).Pulses)./1000)<4)% & mean(diff(s(k).Pulses)./1000)>4)
         Pulses=s(k).Pulses;%+16.92*ones(size(s(k).Pulses));
         firerate=s(k).FireRate;
@@ -31,7 +32,10 @@ for k=1:size(s,2)
             stdWor=std(s(k).waveforms(cluster,:));
             t1= 1000*(0:1:length(meanWor)-1)/s(k).FireRate; %linspace(-1,1.5,length(meanW));%
             time=linspace(min(t1),max(t1),1000);
-            if length(meanWor)<=1
+            if length(meanWor)<=1 | t1(end)<2
+                if t1(end)<2
+                    close
+                end
                 continue
             end
             meanW=spline(t1,meanWor,time);
@@ -58,10 +62,12 @@ for k=1:size(s,2)
             xlabel('Entire Block Raster')
             axis([0 1000*s(k).times(end) -2 2])
             subplot(3,3,[3,6])
-            isi=isigraph(1000*s(k).times(cluster),0,1000*s(k).times(cluster(end)),3,last_bin);
+            isi=isigraph(1000*s(k).times(cluster),0,1000*s(k).times(cluster(end)),1,last_bin);
             title(['Position in Structure: ' num2str(k)])
-            xlabel([num2str(100*isi(1)/sum(isi)) '% multiunit activity'])
-            xlim([0 50])%last_bin])
+            xlabel([num2str(100*sum(isi(1:3))/sum(isi)) '% multiunit activity'])
+            xlim([0 100])
+            subplot(3,3,[7:9])
+            xlabel([num2str(100*sum(isi(1:2))/sum(isi)) '% multiunit activity'])
             if 100*isi(1)/sum(isi)<8 & ~isnan(100*isi(1)/sum(isi)) & size(isi(isi~=0),1)>1
                 temp(1)=k;
                 temp(2)=g;
