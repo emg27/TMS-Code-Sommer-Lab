@@ -2,6 +2,7 @@
 clear
 [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
 load([pathname filename])
+filepath=uigetdir('C:\','Pick Where is save the images');
 close all
 %s=rmfield(s,'width');
 %s=rmfield(s,'timept');
@@ -13,6 +14,7 @@ last_bin=250;
 base_save=int16([]);
 wave_save=[];
 z=1;
+counter=0;
 for k=1:size(s,2)
     count=k;
     if (length(s(k).Pulses)>0 ) & median(diff(s(k).Pulses)./1000)>4%&  size(s(k).Intensity,1)>0 &... length(s(k).Pulses)<=25 &
@@ -21,22 +23,26 @@ for k=1:size(s,2)
         firerate=s(k).FireRate;
         for g=1:max(s(k).clusters)
             cluster=find(s(k).clusters==g);
-            if length(cluster)>0
-            figure;
+            if length(cluster)>0 %& length(cluster)~=length(s(k).Pulses)
+            figure(1);
+            
             subplot(3,3,[1,4])
             Raster(Pulses,tb,ta,1000*s(k).times(cluster));
             title(sprintf('%s Cluster: %d',s(k).Name,g))
             axis([-tb ta 0 length(s(k).Pulses)])
+            xlabel('ms')
             subplot(3,3,[2,5])
             meanWor=mean(s(k).waveforms(cluster,:));
             stdWor=std(s(k).waveforms(cluster,:));
             t1= 1000*(0:1:length(meanWor)-1)/s(k).FireRate; %linspace(-1,1.5,length(meanW));%
             time=linspace(min(t1),max(t1),1000);
-            if length(meanWor)<=1 | t1(end)<2
-                if t1(end)<2
-                    close
-                end
+            if length(meanWor)<=1 %| t1(end)<2
+%                 if t1(end)<2
+%                     close
+%                 end
                 continue
+            else
+                counter=counter+1;    
             end
             meanW=spline(t1,meanWor,time);
             stdW=spline(t1,stdWor,time);
@@ -56,6 +62,7 @@ for k=1:size(s,2)
             plot(time(timept),meanW(timept),'go')
             end
             title(sprintf('Average Waveform- Total Number of Spikes: %d',length(s(k).times(cluster))))
+            xlabel('ms')
             xlim([min(time) max(time)])
             subplot(3,3,[7:9])
             blockraster(Pulses,1000*s(k).times(cluster),0,[0 0 1])
@@ -64,10 +71,10 @@ for k=1:size(s,2)
             subplot(3,3,[3,6])
             isi=isigraph(1000*s(k).times(cluster),0,1000*s(k).times(cluster(end)),1,last_bin);
             title(['Position in Structure: ' num2str(k)])
-            xlabel([num2str(100*sum(isi(1:3))/sum(isi)) '% multiunit activity'])
+            xlabel([num2str(100*sum(isi(1:3))/sum(isi)) '% multiunit activity in first 3ms ISI bins'])
             xlim([0 100])
             subplot(3,3,[7:9])
-            xlabel([num2str(100*sum(isi(1:2))/sum(isi)) '% multiunit activity'])
+            xlabel([num2str(100*sum(isi(1:2))/sum(isi)) '% multiunit activity in first 2ms ISI bins'])
             if 100*isi(1)/sum(isi)<8 & ~isnan(100*isi(1)/sum(isi)) & size(isi(isi~=0),1)>1
                 temp(1)=k;
                 temp(2)=g;
@@ -83,6 +90,11 @@ for k=1:size(s,2)
 %             psth1block(s(k).Pulses,tb+gauss_size,ta+gauss_size,1000*s(k).times(cluster),gauss_size,0);
 %             title(sprintf('%s Cluster: %d',s(k).Name,g))
 %             xlim([-tb ta])
+if counter==1
+    pause
+end
+print(gcf,'-dpng', [filepath '\spike' num2str(counter)])          
+clf(1)
             end
         end
     else
