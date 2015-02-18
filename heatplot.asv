@@ -36,8 +36,7 @@ for k=1:size(s,2)
                     continue    
                 end
                 if size(inten)==0
-                    continue
-                end
+                    contin
                 counter=counter+1;
                 allptsh=[allptsh; stim inten mean_trl_fr];
                 normptsh=[normptsh; stim inten mean_trl_fr/max(abs(mean_trl_fr))];
@@ -59,16 +58,3 @@ line([500 500],[0 828],'Color','k')
 ylabel('Cells-All Intensities')
 xlabel('Time (ms)')
 %title('Norm Sham')
-
-% for n=1:10
-% pos=find(shamps(:,2)<=n*10 & shamps(:,2)>10*(n-1));
-% subplot(2,5,n);imagesc(shamps(pos,3:end),[-1 1])
-% title(['Sham ' num2str(n) '0%'])
-% line([500 500],[0 length(pos)+1],'Color','k')
-% end
-% for n=1:10
-% pos=find(stimps(:,2)<=n*10 & stimps(:,2)>10*(n-1));
-% subplot(2,5,n);imagesc(stimps(pos,3:end),[-1 1])
-% title(['Stim ' num2str(n) '0%'])
-% line([500 500],[0 length(pos)+1],'Color','k')
-% end

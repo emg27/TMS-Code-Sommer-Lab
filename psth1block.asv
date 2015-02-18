@@ -34,7 +34,7 @@ for n=1:length(pulse)
        baseline(n)=mean(trl_fr(n,bin_start_times<-5));
        trl_fr(n,:)=(trl_fr(n,:)-baseline(n))/baseline(n);
    else
-       baseline(n)=NaN;
+       baseline=NaN;
    end
 end
 mean_trl_fr=mean(trl_fr);
