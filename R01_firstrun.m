@@ -1,5 +1,8 @@
+%% Load File and get Directory
 % filename='Jessica_data.mat';
 clear
+% .mat file contains struct "s" with the following parameters:
+
 [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
 load([pathname filename])
 filepath=uigetdir('C:\','Pick Where is save the images');
