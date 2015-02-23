@@ -5,12 +5,15 @@ close all
 
 tbase=500; %amount of baseline collected
 ta=500; %amount of time after the TMS pulse
-gauss_size=5;
+gauss_size=10;
 
 counter=0; %Will count the number of cells used 
 allptsh=[];
 normptsh=[];
-for k=1:size(s,2)
+%2012 Data: 1 to 113
+%2013 Data: 114 to 287
+%2014 Data: 288 to end
+for k=1:size(s,2)%1:113%size(s,2)
     if(length(s(k).Pulses)>0) & median(diff(s(k).Pulses))>4 %& ...
             %size(s(k).Stim,1)>0 & strcmp(s(k).Stim(1),'Stim')==1 &...
             %size(s(k).Intensity,1)>0 & strcmp(s(k).Intensity(1),'90')==1
@@ -28,17 +31,22 @@ for k=1:size(s,2)
                 elseif size(s(k).Stim,1)>0 & strcmp(s(k).Stim(1),'Sham')==1
                     stim=0;
                 else
-                    continue
+                    stim=3;
                 end
                 if size(s(k).Intensity,1)>0
-                    inten=str2num(s(k).Intensity{1});
+                    inten=s(k).Intensity(1);
                 else
-                    continue    
+                    inten=-10;   
                 end
                 if size(inten)==0
                     continue
                 end
+                if size(nonzeros(mean_trl_fr),1)<1
+                    continue
+                end
                 counter=counter+1;
+%                 stim=1;
+%                 inten=nan;
                 allptsh=[allptsh; stim inten mean_trl_fr];
                 normptsh=[normptsh; stim inten mean_trl_fr/max(abs(mean_trl_fr))];
             end
@@ -48,27 +56,36 @@ end
 figure
 subplot(1,2,1)
 imagesc(allptsh(:,3:end))
-line([500 500],[0 828],'Color','k')
+line([tbase tbase],[0 counter+1],'Color','k')
 ylabel('Cells-All Intensities')
 xlabel('Time (ms)')
+xlim([0 tbase+ta])
 %title('Stim')
 % figure
 subplot(1,2,2)
 imagesc(normptsh(:,3:end))
-line([500 500],[0 828],'Color','k')
+line([tbase tbase],[0 counter+1],'Color','k')
 ylabel('Cells-All Intensities')
 xlabel('Time (ms)')
 %title('Norm Sham')
 
-% for n=1:10
-% pos=find(shamps(:,2)<=n*10 & shamps(:,2)>10*(n-1));
-% subplot(2,5,n);imagesc(shamps(pos,3:end),[-1 1])
-% title(['Sham ' num2str(n) '0%'])
-% line([500 500],[0 length(pos)+1],'Color','k')
-% end
-% for n=1:10
-% pos=find(stimps(:,2)<=n*10 & stimps(:,2)>10*(n-1));
-% subplot(2,5,n);imagesc(stimps(pos,3:end),[-1 1])
-% title(['Stim ' num2str(n) '0%'])
-% line([500 500],[0 length(pos)+1],'Color','k')
-% end
+figure
+pSh=find(normptsh(:,1)==0);
+pSt=find(normptsh(:,1)==1);
+shamps=normptsh(pSh,:);
+stimps=normptsh(pSt,:);
+%shamps=normptsh(normptsh(:,1)==0,:);
+%stimps=normptsh(normptsh(:,1)==1,:);
+for n=1:10
+pos=find(shamps(:,2)<=n*10 & shamps(:,2)>10*(n-1));
+subplot(2,5,n);imagesc(shamps(pos,3:end),[-1 1])
+title(['Sham ' num2str(n) '0%'])
+line([500 500],[0 length(pos)+1],'Color','k')
+end
+figure
+for n=1:10
+pos=find(stimps(:,2)<=n*10 & stimps(:,2)>10*(n-1));
+subplot(2,5,n);imagesc(stimps(pos,3:end),[-1 1])
+title(['Stim ' num2str(n) '0%'])
+line([500 500],[0 length(pos)+1],'Color','k')
+end
