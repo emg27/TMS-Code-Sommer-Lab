@@ -47,7 +47,6 @@ for k=1:size(s,2)%1:113%size(s,2)
                 counter=counter+1;
 %                 stim=1;
 %                 inten=nan;
-
                 allptsh=[allptsh; stim inten mean_trl_fr];
                 normptsh=[normptsh; stim inten mean_trl_fr/max(abs(mean_trl_fr))];
             end

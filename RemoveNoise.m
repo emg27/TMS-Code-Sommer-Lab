@@ -74,7 +74,7 @@ for k=1:size(s,2)
             end
             check=input('Is this file noise?')
             if check==1
-                s(k).clusters(cluster)=g+100;
+                s(k).clusters(cluster)=0;
             end
             clf(1)
             end
