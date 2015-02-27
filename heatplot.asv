@@ -48,7 +48,14 @@ for k=1:size(s,2)%1:113%size(s,2)
                 AreaDate{counter,1}=s(k).BrainArea;
                 AreaDate{counter,2}=s(k).Name;
                 if strcmp(s(k).BrainArea,'FEF')
-                    AreaDate{
+                    AreaDate{counter,3}=-1;
+                elseif strcmp(s(k).BrainArea,'V1') | strcmp(s(k).BrainArea,'VI')
+                    AreaDate{counter,3}=-.5;
+                elseif strcmp(s(k).BrainArea,'M1') | strcmp(s(k).BrainArea,'MI')
+                    AreaDate{counter,3}=0;
+                else
+                    AreaDate{counter,3}=1;
+                end
 %                 stim=1;
 %                 inten=nan;
                 allptsh=[allptsh; stim inten mean_trl_fr];
@@ -58,7 +65,7 @@ for k=1:size(s,2)%1:113%size(s,2)
     end
 end
 figure
-subplot(1,3,1)
+subplot(1,5,[1 2])
 imagesc(allptsh(:,3:end))
 line([tbase tbase],[0 counter+1],'Color','k')
 ylabel('Cells-All Intensities')
@@ -66,12 +73,14 @@ xlabel('Time (ms)')
 xlim([0 tbase+ta])
 %title('Stim')
 % figure
-subplot(1,3,2)
+subplot(1,5,[3 4])
 imagesc(normptsh(:,3:end))
 line([tbase tbase],[0 counter+1],'Color','k')
 ylabel('Cells-All Intensities')
 xlabel('Time (ms)')
 %title('Norm Sham')
+subplot(1,5,5)
+imagesc(cell2mat(AreaDate(:,3)))
 
 figure
 pSh=find(normptsh(:,1)==0);
@@ -80,13 +89,17 @@ shamps=normptsh(pSh,:);
 stimps=normptsh(pSt,:);
 %shamps=normptsh(normptsh(:,1)==0,:);
 %stimps=normptsh(normptsh(:,1)==1,:);
+peakpoints=zeros(10,2);
+peaktimes=peakpoints;
 for n=1:10
 pos=find(shamps(:,2)<=n*10 & shamps(:,2)>10*(n-1));
 subplot(4,5,n);imagesc(shamps(pos,3:end),[-1 1])
 title(['Sham ' num2str(n) '0%'])
 line([500 500],[0 length(pos)+1],'Color','k')
 subplot(4,5,n+10)
-plot(nanmean(shamps(pos,3:end)),'r');
+avgSham(n,:)=nanmean(shamps(pos,3:end));
+avgShamSM(n,:)=smooth(avgSham(n,:),25);
+plot(avgSham(n,:),'r');
 hold on
 %plot(nanmean(allptsh(pSh(pos),3:end)),'b')
 plot(1:(tbase+ta),0*(1:(tbase+ta)),'k--')
@@ -95,6 +108,10 @@ ylim([-.25 .6])
 %line([500 500],[-.01 0.03],'Color','k')
 title(['Sham ' num2str(n) '0%'])
 xlim([15 1008])
+peakpoints(n,1)=max(avgSham(n,tbase+3:tbase+203)); %Finds and stores the max point after the TMS pulse
+peaktimes(n,1)=find(avgSham(n,:)==peakpoints(n,1))-tbase;
+peakpointsSM(n,1)=max(smooth(avgSham(n,tbase+3:tbase+203),25)); %Finds and stores the max point after the TMS pulse
+peaktimesSM(n,1)=find(smooth(avgSham(n,:),25)==peakpointsSM(n,1))-tbase;
 end
 figure
 for n=1:10
@@ -103,7 +120,9 @@ subplot(4,5,n);imagesc(stimps(pos,3:end),[-1 1])
 title(['Stim ' num2str(n) '0%'])
 line([500 500],[0 length(pos)+1],'Color','k')
 subplot(4,5,n+10)
-plot(nanmean(stimps(pos,3:end)),'r');
+avgStim(n,:)=nanmean(stimps(pos,3:end));
+avgStimSM(n,:)=smooth(avgStim(n,:),25);
+plot(avgStim(n,:),'r');
 hold on
 %plot(nanmean(allptsh(pSt(pos),3:end)),'b')
 plot(1:(tbase+ta),0*(1:(tbase+ta)),'k--')
@@ -112,4 +131,35 @@ ylim([-.25 .6])
 %line([500 500],[-.01 0.03],'Color','k')
 title(['Stim ' num2str(n) '0%'])
 xlim([15 1008])
+peakpoints(n,2)=max(avgStim(n,tbase+3:tbase+203)); %Finds and stores the max point after the TMS pulse
+peakpointsSM(n,2)=max(smooth(avgStim(n,tbase+3:tbase+203),25)); %Finds and stores the max point after the TMS pulse
+peaktimes(n,2)=find(avgStim(n,:)==peakpoints(n,2))-tbase;
+peaktimesSM(n,2)=find(smooth(avgStim(n,:),25)==peakpointsSM(n,2))-tbase;
 end
+
+figure
+subplot(2,1,1)
+plot(peakpoints(1:9,:),'o'); legend('Sham','Stim')
+title('Raw Peak points')
+subplot(2,1,2)
+plot(peakpointsSM(1:9,:),'o'); legend('Sham','Stim')
+title('Smoothed by 25 points')
+figure
+subplot(2,1,1)
+plot(peaktimes(1:9,:),'o'); legend('Sham','Stim') %Raw Plot times
+title('Raw Times')
+subplot(2,1,2)
+plot(peaktimesSM(1:9,:),'o'); legend('Sham','Stim') %Raw Plot times
+title('Smooth Peak Points by 25 25 points')
+figure
+subplot(2,1,1)
+plot(avgShamSM(1:9,:)');hold on
+line([tbase+3tbase+3],[-.25 .6])
+%legend('10','20','30','40','50','60','70','80','90')
+title('Sham')
+xlim([tbase-43 tbase+ta+3])
+subplot(2,1,2)
+plot(avgStimSM(1:9,:)')
+legend('10','20','30','40','50','60','70','80','90')
+title('Stim')
+xlim([tbase-43 tbase+ta+3])
