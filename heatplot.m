@@ -5,7 +5,7 @@ close all
 
 tbase=500; %amount of baseline collected
 ta=500; %amount of time after the TMS pulse
-gauss_size=10;
+gauss_size=2.5;
 
 counter=0; %Will count the number of cells used 
 allptsh=[]; 
@@ -66,23 +66,26 @@ for k=1:size(s,2)%1:113%size(s,2)
     end
 end
 figure
-subplot(1,5,[1 2])
-imagesc(allptsh(:,3:end))
+subplot(1,7,[1 2])
+imagesc(allptsh(:,3+gauss_size:end-gauss_size))
 line([tbase tbase],[0 counter+1],'Color','k')
 ylabel('Cells-All Intensities')
 xlabel('Time (ms)')
 xlim([0 tbase+ta])
 %title('Stim')
 % figure
-subplot(1,5,[3 4])
-imagesc(normptsh(:,3:end))
+subplot(1,7,[3 4])
+imagesc(normptsh(:,3+gauss_size:end-gauss_size))
 line([tbase tbase],[0 counter+1],'Color','k')
 ylabel('Cells-All Intensities')
 xlabel('Time (ms)')
 %title('Norm Sham')
-subplot(1,5,5)
+subplot(1,7,5)
 imagesc(cell2mat(AreaDate(:,3)))
-
+subplot(1,7,6)
+imagesc(normptsh(:,1))
+subplot(1,7,7)
+imagesc(normptsh(:,2))
 [newfilename,saveloc]=uiputfile('*.mat'); %Change to the location where you want to save to
 save([saveloc newfilename],'normptsh','allptsh','AreaDate',...
     'tbase','ta','gauss_size')

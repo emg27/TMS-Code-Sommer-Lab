@@ -1,16 +1,19 @@
 %%Calculate the baselines for cells before and after the tms pulse and then
 %%plot the neuron response, after vs before.
-close all
+% close all
 %load data
 file='base_save_SFN.mat';
 load(file);
-
+% clear
+% [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
+% load([pathname filename])
+% close all
 %set the parameter
 t_period=200; %Time period for average firing rate before and after
 base_bef=[];
 base_aft=[];
 
-dose=figure;
+dose=figure; 
 %Create a file for each intensity
 intensity=unique(base_save(3,:));
 for h=[1 5 7 9]%1:size(intensity,2)-1
@@ -24,6 +27,9 @@ for h=[1 5 7 9]%1:size(intensity,2)-1
     for n=1:size(base_inten,2)
         blockdata=s(base_inten(1,n)); %save the particular block we are interested in
         pulses=blockdata.Pulses;
+        if size(pulses,2)<1
+            continue
+        end
         clust_pos=find(blockdata.clusters==base_inten(2,n)); %Finds the cluster position for the clusters we are interested in
         clust_time=1000*blockdata.times(clust_pos); %Finds the times of the interested cluster: turns into ms
         if inten_pos(n)==28 | inten_pos(n)==135
