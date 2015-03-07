@@ -5,11 +5,12 @@ close all
 
 tbase=500; %amount of baseline collected
 ta=500; %amount of time after the TMS pulse
-gauss_size=2.5;
+gauss_size=5;
 
 counter=0; %Will count the number of cells used 
 allptsh=[]; 
 normptsh=[];
+spike=[];
 %2012 Data: 1 to 113
 %2013 Data: 114 to 287
 %2014 Data: 288 to end
@@ -23,7 +24,7 @@ for k=1:size(s,2)%1:113%size(s,2)
             cluster=find(s(k).clusters==g);
             if length(cluster)>0 & length(cluster)>length(pulses)
                 figure(10)
-                [spk_d,trl_fr,bin_start_times,baseline,mean_trl_fr]=...
+                [spk_d,trl_fr,bin_start_times,baseline,mean_trl_fr,binned_spks]=...
                     psth1block(pulses,tbase+gauss_size,ta+gauss_size, 1000*s(k).times(cluster), gauss_size,0);
                 close(10);
                 if size(s(k).Stim,1)>0 & strcmp(s(k).Stim(1),'Stim')==1
@@ -61,6 +62,7 @@ for k=1:size(s,2)%1:113%size(s,2)
 %                 inten=nan;
                 allptsh=[allptsh; stim inten mean_trl_fr];
                 normptsh=[normptsh; stim inten mean_trl_fr/max(abs(mean_trl_fr))];
+                spike=[spike binned_spks];
             end
         end
     end
@@ -68,7 +70,7 @@ end
 figure
 subplot(1,7,[1 2])
 imagesc(allptsh(:,3+gauss_size:end-gauss_size))
-line([tbase tbase],[0 counter+1],'Color','k')
+line([tbase+1 tbase+1],[0 counter+1],'Color','k')
 ylabel('Cells-All Intensities')
 xlabel('Time (ms)')
 xlim([0 tbase+ta])
@@ -76,7 +78,7 @@ xlim([0 tbase+ta])
 % figure
 subplot(1,7,[3 4])
 imagesc(normptsh(:,3+gauss_size:end-gauss_size))
-line([tbase tbase],[0 counter+1],'Color','k')
+line([tbase+1 tbase+1],[0 counter+1],'Color','k')
 ylabel('Cells-All Intensities')
 xlabel('Time (ms)')
 %title('Norm Sham')

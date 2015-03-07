@@ -2,12 +2,12 @@
 thres=0.01;
 thresnorm=0.1;
 bin_size=3;
-endpt=500;
+endpt=500; 
 
 %Calculate the values for all the peaks following the TMS pulse
 for n=1:size(allptsh,1)
-    [peak,time]=findpeaks(allptsh(n,3+tbase:end),'MinPeakHeight',thres);
-    [pnorm,tnorm]=findpeaks(normptsh(n,3+tbase:end),'MinPeakHeight',thresnorm);
+    [peak,time]=findpeaks(allptsh(n,4+tbase:end),'MinPeakHeight',thres);
+    [pnorm,tnorm]=findpeaks(normptsh(n,4+tbase:end),'MinPeakHeight',thresnorm);
     if size(time,2)>0
         peakVal(n,1)=peak(1);
         timeVal(n,1)=time(1);
