@@ -85,7 +85,7 @@ for n=1:9
     xlim([0 200])
 end
 
-%% nANOVA for binned values across: time, Intensity, and type
+%% ANOVAN for binned values across: time, Intensity, and type
 % 3 dim matrix with all values.
 %   1: Intensity
 %   2: Times
@@ -124,6 +124,31 @@ end
 
 % Perform Anova
 [A, B, stats] = anovan(dataAnovaVector,...
-    {gTypeVector', gTimeVector', gIntenseVector'})
+    {gTypeVector', gTimesVector', gIntVector'})
 
 %% Anova for peak times across: Intensity, stim/sham
+yTimes = timeVal(:,1);
+gType = allptsh(:,1);
+gInt = allptsh(:,2);
+
+% Remove NAN for timeVals
+temp=yTimes;
+yTimes=yTimes(~isnan(temp)); gType=gType(~isnan(temp)); gInt=gInt(~isnan(temp));
+% Remove NAN for Type
+temp=gType;
+yTimes=yTimes(~isnan(temp)); gType=gType(~isnan(temp)); gInt=gInt(~isnan(temp));
+% Remove unknown stimulus conditions
+temp=gType;
+yTimes=yTimes(temp ~= 3); gType=gType(temp ~= 3); gInt=gInt(temp ~= 3);
+% Remove NAN for Intensity conditions
+temp=gInt;
+yTimes=yTimes(~isnan(temp)); gType=gType(~isnan(temp)); gInt=gInt(~isnan(temp));
+
+% Perform ANOVA
+[A, B, stats] = anovan(yTimes, {gType, gInt}, 'model', 'interaction');
+
+%% Anova for Stim for peak times across: Intensity
+% Remove sham conditions
+temp=gType;
+yTimes=yTimes(temp ~= 0); gType=gType(temp ~= 0); gInt=gInt(temp ~= 0);
+[A, B, stats] = anovan(yTimes, {gInt});
