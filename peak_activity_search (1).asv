@@ -51,37 +51,34 @@ intenN=figure;
 % intenSt2=figure;
 intenN2=figure;
 for n=1:9
-    posSt=find(stimps(:,2)<=n*10 & stimps(:,2)>10*(n-1));
-    posSh=find(shamps(:,2)<=n*10 & shamps(:,2)>10*(n-1));
-    %Determine the histogram distribution for the stim files
-    [StBin(n,:),timeSt(n,:)]=hist(timeVal(posSt,1),0:bin_size:endpt);
-    [StnormBin(n,:),tnormSt(n,:)]=hist(timeVal(posSt,2),0:bin_size:endpt);
-    %Determine the histogram distribution for the sham files
-    [ShBin(n,:),timeSh(n,:)]=hist(timeVal(posSh,1),0:bin_size:endpt);
-    [ShnormBin(n,:),tnormSh(n,:)]=hist(timeVal(posSh,2),0:bin_size:endpt);
-    % figure(intenSt)
-    % subplot(3,3,n)
-    % plot(timeSt(n,:),StBin(n,:),'bo-',timeSh(n,:),ShBin(n,:),'go-')
-    % title([num2str(n*10) '% Stim'])
-    % %xlim([0 150])
-    figure(intenN)
-    subplot(3,3,n)
-    plot(tnormSt(n,:),StnormBin(n,:),'bo-',tnormSh(n,:),ShnormBin(n,:),'go-')
-    title([num2str(n*10) '% Stim Normalized'])
-    xlim([0 200])
-    % figure(intenSt2)
-    % subplot(3,3,n)
-    % plot(timeSt(n,:),StBin(n,:)/sum(StBin(n,:)),'bo-',...
-    %     timeSh(n,:),ShBin(n,:)/sum(ShBin(n,:)),'go-')
-    % title([num2str(n*10) '% Stim Percentage'])
-    xlim([0 200])
-    figure(intenN2)
-    subplot(3,3,n)
-    plot(tnormSt(n,:),StnormBin(n,:)/sum(StnormBin(n,:)),...
-        'bo-',tnormSh(n,:),ShnormBin(n,:)/sum(ShnormBin(n,:)),'go-')
-    title([num2str(n*10) '% Stim Normalized Percentage'])
-    xlim([0 200])
+posSt=find(stimps(:,2)<=n*10 & stimps(:,2)>10*(n-1));
+posSh=find(shamps(:,2)<=n*10 & shamps(:,2)>10*(n-1));
+%Determine the histogram distribution for the stim files
+[StBin(n,:),timeSt(n,:)]=hist(timeVal(posSt,1),0:bin_size:endpt);
+[StnormBin(n,:),tnormSt(n,:)]=hist(timeVal(posSt,2),0:bin_size:endpt);
+%Determine the histogram distribution for the sham files
+[ShBin(n,:),timeSh(n,:)]=hist(timeVal(posSh,1),0:bin_size:endpt);
+[ShnormBin(n,:),tnormSh(n,:)]=hist(timeVal(posSh,2),0:bin_size:endpt);
+% figure(intenSt)
+% subplot(3,3,n)
+% plot(timeSt(n,:),StBin(n,:),'bo-',timeSh(n,:),ShBin(n,:),'go-')
+% title([num2str(n*10) '% Stim'])
+% %xlim([0 150])
+figure(intenN)
+subplot(3,3,n)
+plot(tnormSt(n,:),StnormBin(n,:),'bo-',tnormSh(n,:),ShnormBin(n,:),'go-')
+title([num2str(n*10) '% Stim Normalized'])
+xlim([0 200])
+% figure(intenSt2)
+% subplot(3,3,n)
+% plot(timeSt(n,:),StBin(n,:)/sum(StBin(n,:)),'bo-',...
+%     timeSh(n,:),ShBin(n,:)/sum(ShBin(n,:)),'go-')
+% title([num2str(n*10) '% Stim Percentage'])
+xlim([0 200])
+figure(intenN2)
+subplot(3,3,n)
+plot(tnormSt(n,:),StnormBin(n,:)/sum(StnormBin(n,:)),...
+    'bo-',tnormSh(n,:),ShnormBin(n,:)/sum(ShnormBin(n,:)),'go-')
+title([num2str(n*10) '% Stim Normalized Percentage'])
+xlim([0 200])
 end
-
-%% ANOVA
-dataAnova
