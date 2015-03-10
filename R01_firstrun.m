@@ -59,7 +59,7 @@ for k=1:size(s,2)
             plot(time,meanW,'k');
             %check=input('Spike?:\n')
             %if check==1
-            [width timept]=classify(meanW,firerate);
+            [width timept]=classify(meanW,time);%firerate);
 %             [s(k).width s(k).timept]=classify(meanW,firerate);
 %                  if mean(isnan(s(k).timept))<1
 %                      plot(time(s(k).timept),meanW(s(k).timept),'go')

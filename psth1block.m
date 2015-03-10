@@ -1,4 +1,4 @@
-function[spk_d,trl_fr,bin_start_times,baseline,mean_trl_fr]=psth1block(pulse,time_b,time_a,cluster,gauss_size,b_correct)
+function[spk_d,trl_fr,bin_start_times,baseline,mean_trl_fr,binned_spks]=psth1block(pulse,time_b,time_a,cluster,gauss_size,b_correct)
 
 bin_size=1;%10;
 gauss_size=gauss_size;%/1000;

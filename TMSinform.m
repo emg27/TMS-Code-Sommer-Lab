@@ -9,6 +9,9 @@ for k=1:size(Date,1)
     dashpos=dash{k};
     date=Date{k};
     block=BlockNumber{k};
+    if isnumeric(block)
+        block=num2str(block);
+    end
     if size(dashpos,2)<2
         FileName(k)=cellstr('');
     elseif dashpos(1)==2 

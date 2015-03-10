@@ -1,8 +1,8 @@
-function[width,p]=classify(meanw,firerate)
+function[width,p]=classify(meanw,time)%firerate)
 if min(meanw)>-.3
 %%Waveform classifications
 
-time=1000*(0:1:length(meanw)-1)/firerate;
+%time=1000*(0:1:length(meanw)-1)/firerate;
 
 %%Find the positions of the points
 a2=find(meanw==min(meanw));
@@ -21,7 +21,7 @@ pointer=.1*meanw(p2);
 minref=min(meanw(find(meanw(1:p2)>pointer)));
 maxref=max(meanw(find(meanw(1:p2)<=pointer)));
 
-if length(maxref)<=0 | (minref-pointer) < (maxref-pointer)
+if length(maxref)<=0 | abs(minref-pointer) < abs(maxref-pointer)
     p1=find(meanw(1:p2)==minref)-1;
     p1=p1(end);
 else
@@ -37,7 +37,7 @@ pointer=.1*meanw(p6);
 minref=min(meanw(find(meanw(p6:end)>pointer)+p6-1));
 maxref=max(meanw(find(meanw(p6:end)<=pointer)+p6-1));
 
-if length(maxref)<=0 | (minref-pointer) < (maxref-pointer)
+if length(maxref)<=0 | abs(minref-pointer) < abs(maxref-pointer)
     p7=find(meanw(p6:end)==minref)+p6-1;
 else
     p7=find(meanw(p6:end)==maxref)+p6-1;
@@ -61,6 +61,6 @@ width(9)=time(p6)-time(p2)
 
 p=[p1 p2 p3 p4 p5 p6 p7];
 else
-    p=NaN(7,1);
-    width=NaN(9,1);
+    p=NaN(1,7);
+    width=NaN(1,9);
 end
