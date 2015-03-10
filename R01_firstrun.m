@@ -1,8 +1,12 @@
-%% Load File and get Directory
+%% Load File and get Directory 
 % filename='Jessica_data.mat';
 clear
-% .mat file contains struct "s" with the following parameters:
-
+% .mat file contains struct "s" with "n" spikes in the following parameters:
+%   FireRate
+%   Pulses (TMS Pulses)
+%   times (time in seconds of each recorded spike)
+%   clusters (cluster that each of the n spikes belongs to)
+%   waveforms (waveforms of each of the n spikes)
 [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
 load([pathname filename])
 filepath=uigetdir('C:\','Pick Where is save the images');
@@ -24,6 +28,7 @@ for k=1:size(s,2)
             %strcmp(s(k).Stim(1),'Stim')==1) %& mean(diff(s(k).Pulses)./1000)<4)% & mean(diff(s(k).Pulses)./1000)>4)
         Pulses=s(k).Pulses;%+16.92*ones(size(s(k).Pulses));
         firerate=s(k).FireRate;
+        % Iterate through clusters and generate figures
         for g=1:max(s(k).clusters)
             cluster=find(s(k).clusters==g);
             if length(cluster)>0 %& length(cluster)~=length(s(k).Pulses)
