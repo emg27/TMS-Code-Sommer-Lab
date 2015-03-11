@@ -86,17 +86,17 @@ for n=1:9
 end
 
 %% ANOVAN for binned values across: time, Intensity, and type
+% Anova Parameters
+gInt = 10:10:90;
+gTimes = 0:6:200;
+gType = 0:1;
+
 % 3 dim matrix with all values.
 %   1: Intensity
 %   2: Times
 %   3: Stim/Sham
-dataAnova(:,:,1) = StnormBin;
-dataAnova(:,:,2) = ShnormBin;
-
-% Anova Parameters
-gInt = 10:10:90;
-gTimes = 0:6:498;
-gType = 0:1;
+dataAnova(:,:,1) = StnormBin(:,1:length(gTimes));
+dataAnova(:,:,2) = ShnormBin(:,1:length(gTimes));
 
 % Vectorize Anova
 dataAnovaVector = [];
@@ -106,8 +106,11 @@ gTimesVector = [];
 gTypeVector = [];
 
 % Vectorize
+% i: Stimulation type
 for i = 1:size(dataAnova,3)
+    % j: Time information
     for j = 1:size(dataAnova,2)
+        % k: Intensity
         for k = 1:size(dataAnova,1)
             % Vector:
             % stim sham stim sham stim sham stim sham stim sham stim sham
@@ -134,6 +137,9 @@ gInt = allptsh(:,2);
 % Remove NAN for timeVals
 temp=yTimes;
 yTimes=yTimes(~isnan(temp)); gType=gType(~isnan(temp)); gInt=gInt(~isnan(temp));
+% Remove times > 200 ms for timeVals
+temp=yTimes;
+yTimes=yTimes(temp < 100); gType=gType(temp < 100); gInt=gInt(temp < 100);
 % Remove NAN for Type
 temp=gType;
 yTimes=yTimes(~isnan(temp)); gType=gType(~isnan(temp)); gInt=gInt(~isnan(temp));
