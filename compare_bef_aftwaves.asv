@@ -1,5 +1,5 @@
-ta=25;
-tb=25;
+ta=50;
+tb=50;
 pulses=s(k).Pulses;
 clust_pos=find(s(k).clusters==cluster); %Finds the cluster position for the clusters we are interested in
 clust_time=1000*s(k).times(clust_pos); %Finds the times of the interested cluster: turns into ms

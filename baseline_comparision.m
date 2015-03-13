@@ -9,7 +9,7 @@ load(file);
 % load([pathname filename])
 % close all
 %set the parameter
-t_period=200; %Time period for average firing rate before and after
+t_period=50; %Time period for average firing rate before and after
 base_bef=[];
 base_aft=[];
 
