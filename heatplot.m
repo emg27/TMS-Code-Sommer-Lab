@@ -57,6 +57,8 @@ for k=1:size(s,2)%1:113%size(s,2)
                     AreaDate{counter,3}=1;
                 end
                 AreaDate{counter,4}=inten;
+                AreaDate{counter,5}=g;
+                AreaDate{counter,6}=k;
 %                 stim=1;
 %                 inten=nan;
                 allptsh=[allptsh; stim inten mean_trl_fr];

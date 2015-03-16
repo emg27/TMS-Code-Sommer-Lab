@@ -1,14 +1,14 @@
-ta=25;
-tb=25;
+ta=500;
+tb=500;
 pulses=s(k).Pulses;
 clust_pos=find(s(k).clusters==cluster); %Finds the cluster position for the clusters we are interested in
 clust_time=1000*s(k).times(clust_pos); %Finds the times of the interested cluster: turns into ms
 rast=figure;
 subplot(3,2,[1:4])
-[pointsB,positionB, ~,~]=Raster(pulses,tb,0,clust_time);
+[pointsB,positionB, spksB,~]=Raster(pulses,tb,0,clust_time);
 set(pointsB(:),'Color',[1 0 0])
 hold on
-[pointsA,positionA, ~,~]=Raster(pulses,0,ta,clust_time);
+[pointsA,positionA, spksA,~]=Raster(pulses,0,ta,clust_time);
 set(pointsA(:),'Color',[0 0 1])
 title(['Population at Intensity ' num2str(s(k).Intensity{cluster}) '%'])
 %xlim([-1*(t_period+500) t_period+500])
