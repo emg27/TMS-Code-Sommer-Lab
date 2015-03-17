@@ -89,42 +89,68 @@ orShse=std(orSh)./sqrt(size(orSh,1));
 
 figure
 subplot(3,2,1)
-
-hold on
-plot_variance(bin_t,inhibStm-inhibStse,inhibStm+inhibStse,'r');
-plot(bin_t,0.*bin_t,'k--',bin_t,mean(inhibSt),'k')
+plot(bin_t,0.*bin_t,'k--',bin_t,mean(inhibSt),'r')
 title(num2str(length(wdthSt(wdthSt<.4,:))))
-subplot(3,2,2)
 
-hold on
-plot_variance(bin_t,inhibShm-inhibShse,inhibShm+inhibShse,'b');
-plot(bin_t,0.*bin_t,'k--',bin_t,mean(mfr_Sham(wdthSh<.4,:)),'k')
+subplot(3,2,2)
+plot(bin_t,0.*bin_t,'k--',bin_t,mean(mfr_Sham(wdthSh<.4,:)),'b')
 title(num2str(length(wdthSh(wdthSh<.4,:))))
 
 subplot(3,2,3)
-
-hold on
-plot_variance(bin_t,excitStm-excitStse,excitStm+excitStse,'r');
-plot(bin_t,0.*bin_t,'k--',bin_t,mean(orSt),'k')
+plot(bin_t,0.*bin_t,'k--',bin_t,mean(orSt),'r')
 title(num2str(length(wdthSt(wdthSt>=.4 & wdthSt<.7))))
-subplot(3,2,4)
 
-hold on
-plot_variance(bin_t,excitShm-excitShse,excitShm+excitShse,'b');
-plot(bin_t,0.*bin_t,'k--',bin_t,mean(orSh),'k')
+subplot(3,2,4)
+plot(bin_t,0.*bin_t,'k--',bin_t,mean(orSh),'b')
 title(num2str(length(wdthSh(wdthSh>=.4 & wdthSh<.7))))
 
 subplot(3,2,5)
-
-hold on
-plot_variance(bin_t,orStm-orStse,orStm+orStse,'r');
-plot(bin_t,0.*bin_t,'k--',bin_t,mean(excitSt),'k')
+plot(bin_t,0.*bin_t,'k--',bin_t,mean(excitSt),'r')
 title(num2str(length(wdthSt(wdthSt>=.7,:))))
-subplot(3,2,6)
 
-hold on
-plot_variance(bin_t,orShm-orShse,orShm+orShse,'b');
-plot(bin_t,0.*bin_t,'k--',bin_t,mean(excitSh),'k')
+subplot(3,2,6)
+plot(bin_t,0.*bin_t,'k--',bin_t,mean(excitSh),'b')
 title(num2str(length(wdthSh(wdthSh>=.7,:))))
 xlabel([num2str(k*10) '%'])
+
+% figure
+% subplot(3,2,1)
+% 
+% hold on
+% plot_variance(bin_t,inhibStm-inhibStse,inhibStm+inhibStse,'r');
+% plot(bin_t,0.*bin_t,'k--',bin_t,mean(inhibSt),'k')
+% title(num2str(length(wdthSt(wdthSt<.4,:))))
+% subplot(3,2,2)
+% 
+% hold on
+% plot_variance(bin_t,inhibShm-inhibShse,inhibShm+inhibShse,'b');
+% plot(bin_t,0.*bin_t,'k--',bin_t,mean(mfr_Sham(wdthSh<.4,:)),'k')
+% title(num2str(length(wdthSh(wdthSh<.4,:))))
+% 
+% subplot(3,2,3)
+% 
+% hold on
+% plot_variance(bin_t,excitStm-excitStse,excitStm+excitStse,'r');
+% plot(bin_t,0.*bin_t,'k--',bin_t,mean(orSt),'k')
+% title(num2str(length(wdthSt(wdthSt>=.4 & wdthSt<.7))))
+% subplot(3,2,4)
+% 
+% hold on
+% plot_variance(bin_t,excitShm-excitShse,excitShm+excitShse,'b');
+% plot(bin_t,0.*bin_t,'k--',bin_t,mean(orSh),'k')
+% title(num2str(length(wdthSh(wdthSh>=.4 & wdthSh<.7))))
+% 
+% subplot(3,2,5)
+% 
+% hold on
+% plot_variance(bin_t,orStm-orStse,orStm+orStse,'r');
+% plot(bin_t,0.*bin_t,'k--',bin_t,mean(excitSt),'k')
+% title(num2str(length(wdthSt(wdthSt>=.7,:))))
+% subplot(3,2,6)
+% 
+% hold on
+% plot_variance(bin_t,orShm-orShse,orShm+orShse,'b');
+% plot(bin_t,0.*bin_t,'k--',bin_t,mean(excitSh),'k')
+% title(num2str(length(wdthSh(wdthSh>=.7,:))))
+% xlabel([num2str(k*10) '%'])
 end
