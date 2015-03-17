@@ -12,6 +12,7 @@ Erinn=[];
 spksvar=[];
 i=1;
 a=[];
+stiminten=double([]);
 gue=figure
 for n=1:size(s,2)
     if length(s(n).Pulses)>0 
@@ -20,7 +21,7 @@ for n=1:size(s,2)
                 continue
             end
                 try2mak=[];
-                tempEri=[n g];
+                tempEri=[n double(g)];
                 Erinn=[Erinn; tempEri];
                 clust=find(s(n).clusters==g);
                 if length(clust)>70 && length(clust)~=length(s(n).Pulses)
@@ -78,6 +79,15 @@ for n=1:size(s,2)
             elseif guess2>.3 && guess2<=.7
                 s(n).type(g)='U'; %u is for unknown
             end
+            if strcmp(s(n).Stim{1},'Sham')==1
+                stim=0;
+            elseif strcmp(s(n).Stim{1},'Stim')==1
+                stim=1;
+            else
+                stim=3;
+            end
+            
+            stiminten=[stiminten; stim s(n).Intensity(1) n double(g)];
 %            else 
 %                s(n).type(g)='_';
 %            end

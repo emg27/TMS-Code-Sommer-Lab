@@ -1,5 +1,5 @@
 close all
-intensity=90;
+intensity=80;
 Tstart=500;
 %gauss_size=5;
 pos=find(normptsh(:,2)>intensity-10 & normptsh(:,2)<=intensity & normptsh(:,1)==1);
@@ -46,7 +46,7 @@ for n=1:length(posB);
     check(n)=length(meanWave);
     %time=1000*(0:length(meanWave)-1)/s(files(n)).FireRate;
     [spikes,time,spikesM,spikesMV]=centerspks(waveforms,s(files(n)).FireRate,300,0);
-    subplot(7,7,n)
+    subplot(6,4,n)
     %plot(spikesM/max(abs(spikesM)))
     plot(time,spikesM/max(abs(spikesM)))
     hold on
