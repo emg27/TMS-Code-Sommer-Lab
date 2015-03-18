@@ -1,6 +1,6 @@
-clear
-[filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
-load([pathname filename])
+% clear
+% [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
+% load([pathname filename])
 close all
 
 figure
@@ -21,18 +21,14 @@ subplot(4,5,n+10)
 avgSham(n,:)=nanmean(shamps(pos,3+gauss_size:end-gauss_size));
 avgShamSM(n,:)=smooth(avgSham(n,:),25);
 allsham=shamps(pos,3+gauss_size:end-gauss_size);
-tempSh=nanmax(allsham(:,tbase:tbase+101)');
-for j=1:length(pos)
-    if mean(allsham(j,tbase:tbase+101)-tempSh(j))~=0
-        posMaxSh=find(allsham(j,tbase:tbase+101)==tempSh(j));
-        maxAllSh(j)=posMaxSh(1);
+temp=nanmax(allsham(:,tbase:tbase+101)');
+for j=1;length(pos)
+    if mean(allsham(j,tbase:tbase+101)-temp(j))~=0
+        maxAllSh(j)=find(allsham(j,tbase:tbase+101)==temp(j));
     else
-        %figure;plot(allsham(j,tbase:tbase+101)')
         maxAllSh(j)=nan;
-    end
 end
-temp2Sh(n)=nanmean(maxAllSh);
-
+temp2(n)=nanmean(maxAllSh);
 plot(avgSham(n,:),'r');
 hold on
 %plot(nanmean(allptsh(pSh(pos),3:end)),'b')
@@ -56,19 +52,6 @@ line([tbase+1 tbase+1],[0 length(pos)+1],'Color','k')
 subplot(4,5,n+10)
 avgStim(n,:)=nanmean(stimps(pos,3+gauss_size:end-gauss_size));
 avgStimSM(n,:)=smooth(avgStim(n,:),25);
-allstim=stimps(pos,3+gauss_size:end-gauss_size);
-tempSt=nanmax(allstim(:,tbase:tbase+101)');
-for j=1:length(pos)
-    if mean(allstim(j,tbase:tbase+101)-tempSt(j))~=0
-        posMaxSt=find(allstim(j,tbase:tbase+101)==tempSt(j));
-        maxAllSt(j)=posMaxSt(1);
-    else
-        %figure;plot(allstim(j,tbase:tbase+101)')
-        maxAllSt(j)=nan;
-    end
-end
-temp2St(n)=nanmean(maxAllSt);
-
 plot(avgStim(n,:),'r');
 hold on
 %plot(nanmean(allptsh(pSt(pos),3:end)),'b')
