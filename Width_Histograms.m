@@ -98,9 +98,11 @@ end
 
 baseline=baseline(~any(isnan(widthall), 2), :);
 widthall= widthall(~any(isnan(widthall), 2), :);
+stiminten=stiminten(~any(isnan(widthall), 2), :);
 
 remove8=find(widthall(:,8)~=0 & baseline>0);
 widthall2=widthall(remove8,:);
+stiminten2=stiminten(remove8,:);
 baseline2=baseline(remove8,:);
 temp=nan(length(baseline2),10);
 for k=1:9

@@ -12,7 +12,7 @@ hold on
 set(pointsA(:),'Color',[0 0 1])
 title(['Population at Intensity ' num2str(s(k).Intensity{cluster}) '%'])
 %xlim([-1*(t_period+500) t_period+500])
-xlabel(['Column Number in Base_save is ' num2str(inten_pos(n))])
+%xlabel(['Column Number in Base_save is ' num2str(inten_pos(n))])
 xlim([-tb ta])
 subplot(3,2,5)
 if size(positionB)>0
@@ -27,3 +27,8 @@ if size(positionA)>0
             s(k).waveforms(clust_pos(positionA),:),'Color',[0 0 1])
 end
 xlabel(s(k).Stim{cluster})
+
+figure
+subplot(3,1,1)
+[spk_d,trl_fr,bin_start_times,baseline,mean_trl_fr,binned_spks]=psth1block(pulses,tb,ta,clust_time,5,0);
+

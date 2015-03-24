@@ -109,7 +109,7 @@ plot(-50:ta,avgSham(1:9,(tbase+1)-50:(tbase+1)+ta)');hold on
 line([0 0],[-.2 .5],'Color','k')
 %legend('10','20','30','40','50','60','70','80','90')
 title(['Sham, Gauss=' num2str(gauss_size) 'ms'])
-xlim([-50 ta])
+xlim([-50 200])
 %axis([tbase-43 tbase+ta+3 -.15 .4])
 subplot(2,1,2)
 plot(-50:ta,avgStim(1:9,(tbase+1)-50:(tbase+1)+ta)')
@@ -117,7 +117,7 @@ line([0 0],[-.2 .5],'Color','k')
 legend('10','20','30','40','50','60','70','80','90')
 title(['Stim, Gauss=' num2str(gauss_size) 'ms'])
 %axis([tbase-43 tbase+ta+3 -.15 .4])
-xlim([-50 ta])
+xlim([-50 200])
 
 figure
 subplot(1,5,1:2)

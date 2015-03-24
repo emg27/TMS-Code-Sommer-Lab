@@ -60,7 +60,7 @@ title(num2str(cellSt))
 subplot(2,1,2)
 plot(bin_t,0.*bin_t,'k--',bin_t,mean(mfr_Sham),'Color','b')
 title(num2str(cellSh))
-xlabel([num2str(n*10) '%'])
+xlabel([num2str(k*10) '%'])
 
 %%Broken down
 inhibSt=mfr_Stim(wdthSt<.4,:);
@@ -90,27 +90,27 @@ orShse=std(orSh)./sqrt(size(orSh,1));
 figure
 subplot(3,2,1)
 plot(bin_t,0.*bin_t,'k--',bin_t,mean(inhibSt),'r')
-title(num2str(length(wdthSt(wdthSt<.4,:))))
+title(num2str(length(wdthSt(wdthSt<.3,:))))
 
 subplot(3,2,2)
 plot(bin_t,0.*bin_t,'k--',bin_t,mean(mfr_Sham(wdthSh<.4,:)),'b')
-title(num2str(length(wdthSh(wdthSh<.4,:))))
+title(num2str(length(wdthSh(wdthSh<.3,:))))
 
 subplot(3,2,3)
 plot(bin_t,0.*bin_t,'k--',bin_t,mean(orSt),'r')
-title(num2str(length(wdthSt(wdthSt>=.4 & wdthSt<.7))))
+title(num2str(length(wdthSt(wdthSt>=.3 & wdthSt<.7))))
 
 subplot(3,2,4)
 plot(bin_t,0.*bin_t,'k--',bin_t,mean(orSh),'b')
-title(num2str(length(wdthSh(wdthSh>=.4 & wdthSh<.7))))
+title(num2str(length(wdthSh(wdthSh>=.3 & wdthSh<.7))))
 
 subplot(3,2,5)
 plot(bin_t,0.*bin_t,'k--',bin_t,mean(excitSt),'r')
-title(num2str(length(wdthSt(wdthSt>=.7,:))))
+title(num2str(length(wdthSt(wdthSt>=.3,:))))
 
 subplot(3,2,6)
 plot(bin_t,0.*bin_t,'k--',bin_t,mean(excitSh),'b')
-title(num2str(length(wdthSh(wdthSh>=.7,:))))
+title(num2str(length(wdthSh(wdthSh>=.3,:))))
 xlabel([num2str(k*10) '%'])
 
 % figure
