@@ -1,9 +1,9 @@
 %close all
-intensity=90;
+intensity=90; 
 Tstart=500;
 %gauss_size=5;
 %pos=find(normptsh(:,1)<2);% & normptsh(:,2)>=60);% & normptsh(:,2)>intensity-10 & normptsh(:,2)<=intensity);
-pos=find(normptsh(:,1)==1 & normptsh(:,2)>=60);
+pos=find(normptsh(:,1)==1 & normptsh(:,2)>=70);
 words='Stim greater than or equal to 60';
 N=length(pos);
 cutoff=1.6;
