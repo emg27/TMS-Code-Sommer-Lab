@@ -2,10 +2,10 @@ function[points,position, num_spike,blocks]=Raster(pulsetime,time_b,time_a,spike
 %%Raster Plots: Created March 14, 2013 This file will create basic raster
 %%plots for the specified for the values necessary:
 %%Raster(pulsetime,time_b,time_a,spikes,blocks,num_spikes)
-%%Pulsetime= The time that the tms pulse begin, this will be the center 
+%%Pulsetime= stimulus alignment time, this will be the center 
 %%marker of the raster plot 
-%%time_b= The amount of time before the pulse to include in the raster
-%%time_a= The amount of time after the pulse to include in the raster
+%%time_b= The amount of time before the stimulus to include in the raster
+%%time_a= The amount of time after the stimulus to include in the raster
 %%spikes= The spike times, this should be a 2 column matrix, where the 
 %%second column contains the spike times and the first has the cluster
 %%number
