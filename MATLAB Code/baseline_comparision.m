@@ -182,7 +182,7 @@ for neuron=1:size(base_bef,2)
     
     [rho_diff,p_diff]=corr(num_pulse_diff',base_pulse_diff,'type','Spearman')
     
-    if h==5 & neuron==9%(neuron==9 | neuron==44 | neuron==40) % p_diff<=0.05
+    if h==7 & neuron==34%(neuron==9 | neuron==44 | neuron==40) % p_diff<=0.05
         figure
         subplot(2,1,1)
         plot(base_pulse_diff,'o')

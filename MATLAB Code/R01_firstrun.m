@@ -14,8 +14,8 @@ close all
 %s=rmfield(s,'width');
 %s=rmfield(s,'timept');
 
-tb=100;
-ta=100;
+tb=100; % time before, 100ms before
+ta=100; % time after, 1000ms after
 gauss_size=30;
 last_bin=250;
 base_save=int16([]);
@@ -32,7 +32,7 @@ for k=1:size(s,2)
         for g=1:max(s(k).clusters)
             cluster=find(s(k).clusters==g);
             if length(cluster)>0 %& length(cluster)~=length(s(k).Pulses)
-            figure(1);
+            figure%(1);
             
             subplot(3,3,[1,4])
             Raster(Pulses,tb,ta,1000*s(k).times(cluster));
@@ -98,11 +98,11 @@ for k=1:size(s,2)
 %             psth1block(s(k).Pulses,tb+gauss_size,ta+gauss_size,1000*s(k).times(cluster),gauss_size,0);
 %             title(sprintf('%s Cluster: %d',s(k).Name,g))
 %             xlim([-tb ta])
-if counter==1
-    pause
-end
-print(gcf,'-dpng', [filepath '\spike' num2str(counter)])          
-clf(1)
+% if counter==1
+%     pause
+% end
+% print(gcf,'-dpng', [filepath '\spike' num2str(counter)])          
+% clf(1)
             end
         end
     else

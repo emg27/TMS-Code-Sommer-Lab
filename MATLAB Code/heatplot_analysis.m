@@ -10,9 +10,9 @@ shamps=normptsh(pSh,:);
 stimps=normptsh(pSt,:);
 %shamps=normptsh(normptsh(:,1)==0,:);
 %stimps=normptsh(normptsh(:,1)==1,:);
-peakpoints=zeros(10,2);
+peakpoints=zeros(9,2);
 peaktimes=peakpoints;
-for n=1:10
+for n=1:9
 pos=find(shamps(:,2)<=n*10 & shamps(:,2)>10*(n-1));
 subplot(4,5,n);imagesc(shamps(pos,3+gauss_size:end-gauss_size),[-1 1])
 title(['Sham ' num2str(n) '0%'])
@@ -48,7 +48,7 @@ peakpointsSM(n,1)=max(avgShamSM(n,tbase+1:tbase+101)); %Finds and stores the max
 peaktimesSM(n,1)=find(smooth(avgSham(n,:),25)==peakpointsSM(n,1))-tbase;
 end
 figure
-for n=1:10
+for n=1:9
 pos=find(stimps(:,2)<=n*10 & stimps(:,2)>10*(n-1));
 subplot(4,5,n);imagesc(stimps(pos,3+gauss_size:end-gauss_size),[-1 1])
 title(['Stim ' num2str(n) '0%'])

@@ -36,6 +36,7 @@ for k=1:size(s,2)%1:113%size(s,2)
                 end
                 if size(s(k).Intensity,1)>0
                     inten=s(k).Intensity(1);
+                    inten=str2num(inten{1});
                 else
                     inten=-10;   
                 end
@@ -53,8 +54,10 @@ for k=1:size(s,2)%1:113%size(s,2)
                 elseif strcmp(s(k).BrainArea,'V1') | strcmp(s(k).BrainArea,'VI')
                     AreaDate{counter,3}=-.5;
                 elseif strcmp(s(k).BrainArea,'M1') | strcmp(s(k).BrainArea,'MI')
-                    AreaDate{counter,3}=0; 
+                    %AreaDate{counter,3}=0; 
                     AreaDate{counter,3}=1;
+                else
+                    AreaDate{counter,3}=0.75;
                 end
                 AreaDate{counter,4}=inten;
                 AreaDate{counter,5}=g;
