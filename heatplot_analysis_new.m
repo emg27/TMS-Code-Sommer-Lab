@@ -1,6 +1,8 @@
 clear
 [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
 load([pathname filename])
+[colormapfile, pathnamecolor]=uigetfile('*.mat')%'oxford_2014.mat';
+load([pathnamecolor colormapfile])
 close all
 
 figure
@@ -12,18 +14,26 @@ stimps=normptsh(pSt,:);
 %stimps=normptsh(normptsh(:,1)==1,:);
 peakpoints=zeros(9,2);
 peaktimes=peakpoints;
+
+CmapHeatPlotcheck=CmapHeatPlot6; %Use either 4 or 6
+Tbefpulse=200;
+time=-(3+gauss_size+tbase):(tbase+gauss_size-1);
+plotrange=[3+gauss_size+tbase+1-Tbefpulse:size(shamps,2)+1-gauss_size];
 for n=1:9
 pos=find(shamps(:,2)<=n*10 & shamps(:,2)>10*(n-1));
-subplot(6,3,n);imagesc(shamps(pos,3+gauss_size:end-gauss_size),[-1 1])
-colormap jet
+
+%subplot(6,3,n);imagesc(shamps(pos,3+gauss_size:end-gauss_size),[-1 1])
+subplot(6,3,n);imagesc(shamps(pos,plotrange),[-1 1])
+colormap(CmapHeatPlotcheck) %jet
+
 title(['Sham ' num2str(n) '0%'])
-line([tbase+1 tbase+1],[0 length(pos)+1],'Color','k')
+line([Tbefpulse+1 Tbefpulse+1],[0 length(pos)+1],'Color','k')
 subplot(6,3,n+9)
-avgSham(n,:)=nanmean(shamps(pos,3+gauss_size:end-gauss_size));
+avgSham(n,:)=nanmean(shamps(pos,:));
 avgShamSM(n,:)=smooth(avgSham(n,:),25);
 allsham=shamps(pos,3+gauss_size:end-gauss_size);
 tempSh=nanmax(allsham(:,tbase:tbase+101)');
-colormap jet
+%colormap jet
 for j=1:length(pos)
     if mean(allsham(j,tbase:tbase+101)-tempSh(j))~=0
         posMaxSh=find(allsham(j,tbase:tbase+101)==tempSh(j));
@@ -35,15 +45,16 @@ for j=1:length(pos)
 end
 temp2Sh(n)=nanmean(maxAllSh);
 
-plot(avgSham(n,:),'r');
+plot(time(plotrange),avgSham(n,plotrange),'r');
 hold on
 %plot(nanmean(allptsh(pSh(pos),3:end)),'b')
-plot(1:(tbase+ta),0*(1:(tbase+ta)),'k--')
-line([tbase+1 tbase+1],[-1 1],'Color','k')
+plot(time(plotrange),0*(time(plotrange)),'k--')
+%line([Tbefpulse+1 Tbefpulse+1],[-1 1],'Color','k')
+line([0 0],[-1 1],'Color','k')
 ylim([-.25 .6])
-%line([500 500],[-.01 0.03],'Color','k')
 title(['Sham ' num2str(n) '0%'])
-xlim([1 size(avgSham(n,:),2)])
+%xlim([1 size(avgSham(n,plotrange),2)])
+xlim([time(plotrange(1)) time(plotrange(end))])
 peakpoints(n,1)=max(avgSham(n,tbase+1:tbase+101)); %Finds and stores the max point after the TMS pulse
 peaktimes(n,1)=find(avgSham(n,:)==peakpoints(n,1))-tbase;
 peakpointsSM(n,1)=max(avgShamSM(n,tbase+1:tbase+101)); %Finds and stores the max point after the TMS pulse
@@ -52,12 +63,12 @@ end
 figure
 for n=1:9
 pos=find(stimps(:,2)<=n*10 & stimps(:,2)>10*(n-1));
-subplot(6,3,n);imagesc(stimps(pos,3+gauss_size:end-gauss_size),[-1 1])
-colormap jet
+subplot(6,3,n);imagesc(stimps(pos,plotrange),[-1 1])
+colormap(CmapHeatPlotcheck)
 title(['Stim ' num2str(n) '0%'])
-line([tbase+1 tbase+1],[0 length(pos)+1],'Color','k')
+line([Tbefpulse+1 Tbefpulse+1],[0 length(pos)+1],'Color','k')
 subplot(6,3,n+9)
-avgStim(n,:)=nanmean(stimps(pos,3+gauss_size:end-gauss_size));
+avgStim(n,:)=nanmean(stimps(pos,:));
 avgStimSM(n,:)=smooth(avgStim(n,:),25);
 allstim=stimps(pos,3+gauss_size:end-gauss_size);
 tempSt=nanmax(allstim(:,tbase:tbase+101)');
@@ -72,15 +83,15 @@ for j=1:length(pos)
 end
 temp2St(n)=nanmean(maxAllSt);
 
-plot(avgStim(n,:),'r');
+plot(time(plotrange),avgStim(n,plotrange),'r');
 hold on
 %plot(nanmean(allptsh(pSt(pos),3:end)),'b')
-plot(1:(tbase+ta),0*(1:(tbase+ta)),'k--')
-line([tbase+1 tbase+1],[-1 1],'Color','k')
+plot(time(plotrange),0*(time(plotrange)),'k--')
+line([0 0],[-1 1],'Color','k')
 ylim([-.25 .6])
 %line([500 500],[-.01 0.03],'Color','k')
 title(['Stim ' num2str(n) '0%'])
-xlim([1 size(avgSham(n,:),2)])
+xlim([time(plotrange(1)) time(plotrange(end))])
 %xlim([15 1008])
 peakpoints(n,2)=max(avgStim(n,tbase+1:tbase+101)); %Finds and stores the max point after the TMS pulse
 %temp=findpeaks(avgStim(n,3+tbase+1:tbase+101));
