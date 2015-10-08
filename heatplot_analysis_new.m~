@@ -1,9 +1,9 @@
-% clear
-% [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
-% load([pathname filename])
-% [colormapfile, pathnamecolor]=uigetfile('*.mat')%'oxford_2014.mat';
-% load([pathnamecolor colormapfile])
-% close all
+clear
+[filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
+load([pathname filename])
+[colormapfile, pathnamecolor]=uigetfile('*.mat')%'oxford_2014.mat';
+load([pathnamecolor colormapfile])
+close all
 
 figure
 pSh=find(normptsh(:,1)==0);
@@ -30,7 +30,7 @@ title(['Sham ' num2str(n) '0%'])
 line([Tbefpulse+1 Tbefpulse+1],[0 length(pos)+1],'Color','k')
 subplot(6,3,n+9)
 avgSham(n,:)=nanmean(shamps(pos,Trunk));
-avgShamSM(n,:)=smooth(avgSham(n,:),25);
+avgShamSM(n,:)=smooth(avgSham(n,Trunk),25);
 allsham=shamps(pos,Trunk);
 tempSh=nanmax(allsham(:,tbase:tbase+101)');
 
@@ -44,7 +44,7 @@ for j=1:length(pos)
 end
 temp2Sh(n)=nanmean(maxAllSh);
 
-plot(time(plotrange),avgSham(n,plotrange),'r');
+plot(time(plotrange),avgSham(n,3+gauss_size+plotrange),'r');
 hold on
 %plot(nanmean(allptsh(pSh(pos),3:end)),'b')
 plot(time(plotrange),0*(time(plotrange)),'k--')
@@ -68,7 +68,7 @@ title(['Stim ' num2str(n) '0%'])
 line([Tbefpulse+1 Tbefpulse+1],[0 length(pos)+1],'Color','k')
 subplot(6,3,n+9)
 avgStim(n,:)=nanmean(stimps(pos,Trunk));
-avgStimSM(n,:)=smooth(avgStim(n,:),25);
+avgStimSM(n,:)=smooth(avgStim(n,Trunk),25);
 allstim=stimps(pos,Trunk);
 tempSt=nanmax(allstim(:,tbase:tbase+101)');
 for j=1:length(pos)
@@ -147,7 +147,7 @@ xlim([-50 200])
 
 figure
 subplot(1,5,1:2)
-imagesc(allptsh(pSt,Trunk)); colormap jet
+imagesc(allptsh(pSt,3+gauss_size:end-gauss_size)); colormap jet
 line([tbase+1 tbase+1],[0 length(pSt)+1],'Color','k')
 ylabel('Cells-All Intensities')
 xlabel('Time (ms)')
@@ -155,7 +155,7 @@ title('Raw Stim')
 xlim([0 tbase+ta])
 colorbar
 subplot(1,5,[3 4])
-imagesc(normptsh(pSt,Trunk)); colormap jet
+imagesc(normptsh(pSt,3+gauss_size:end-gauss_size)); colormap jet
 line([tbase+1 tbase+1],[0 length(pSt)+1],'Color','k')
 ylabel('Cells-All Intensities')
 title('Normalized Stim')
@@ -167,7 +167,7 @@ imagesc(cell2mat(AreaDate(pSt,3)))
 
 figure
 subplot(1,5,1:2)
-imagesc(allptsh(pSh,Trunk)); colormap jet
+imagesc(allptsh(pSh,3+gauss_size:end-gauss_size)); colormap jet
 line([tbase+1 tbase+1],[0 length(pSh)+1],'Color','k')
 ylabel('Cells-All Intensities')
 xlabel('Time (ms)')
@@ -175,7 +175,7 @@ title('Raw Sham')
 xlim([0 tbase+ta])
 colorbar
 subplot(1,5,[3 4])
-imagesc(normptsh(pSh,Trunk)); colormap jet
+imagesc(normptsh(pSh,3+gauss_size:end-gauss_size)); colormap jet
 line([tbase+1 tbase+1],[0 length(pSh)+1],'Color','k')
 ylabel('Cells-All Intensities')
 title('Normalized Sham')
