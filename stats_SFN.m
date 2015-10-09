@@ -11,6 +11,7 @@
 %%difference between the two wave forms and then take a paired t-test
 
 %Stim=avgSham(1:9,(tbase+1)-50:(tbase+1)+ta);
+pvalue=.05/1000;
 
 crop = (tbase+1)-50:(tbase+1)+ta;
 compcrop = (tbase+1):(tbase+1)+ta;
@@ -44,7 +45,8 @@ diffSham=mean(wShamSup)-mean(wShamSub);
 figure
 subplot(2,2,1)
 plot(-50:ta,diffSub(crop),'g', -50:ta, mean(wStimSub(:,crop)), 'b',...
-    -50:ta, mean(wShamSub(:,crop)) ,'r',compcrop(Psub<0.05)-(tbase+1),-0.4,'k*')
+    -50:ta, mean(wShamSub(:,crop)) ,'r',...
+    compcrop(Psub<pvalue)-(tbase+1),-0.4*ones(size(compcrop(Psub<pvalue))),'k*')
 legend('Difference','Stim','Sham')
 title('Subthreshold Difference')
 xlabel('Time (ms)')
@@ -52,7 +54,8 @@ axis([-50 ta -0.4 0.4])
 
 subplot(2,2,3)
 plot(-50:ta,diffSup(crop),'g', -50:ta, mean(wStimSup(:,crop)), 'b',...
-    -50:ta, mean(wShamSup(:,crop)) ,'r',compcrop(Psup<0.05)-(tbase+1),-0.4,'k*')
+    -50:ta, mean(wShamSup(:,crop)) ,'r',...
+    compcrop(Psup<pvalue)-(tbase+1),-0.4*ones(size(compcrop(Psup<pvalue))),'k*')
 legend('Difference','Stim','Sham')
 title('Suprathreshold Difference')
 xlabel('Time (ms)')
@@ -60,7 +63,8 @@ axis([-50 ta -0.4 0.4])
 
 subplot(2,2,2)
 plot(-50:ta,diffStim(crop),'g', -50:ta, mean(wStimSup(:,crop)), 'b',...
-    -50:ta, mean(wStimSub(:,crop)) ,'c',compcrop(PcompSt<0.05)-(tbase+1),-0.4,'k*')
+    -50:ta, mean(wStimSub(:,crop)) ,'c',...
+    compcrop(PcompSt<pvalue)-(tbase+1),-0.4*ones(size(compcrop(PcompSt<pvalue))),'k*')
 legend('Difference','Suprathreshold','Subthreshold')
 title('Sub vs Suprathreshold Difference for Stim')
 xlabel('Time (ms)')
@@ -68,7 +72,8 @@ axis([-50 ta -0.4 0.4])
 
 subplot(2,2,4)
 plot(-50:ta,diffSham(crop),'g', -50:ta, mean(wShamSup(:,crop)), 'b',...
-    -50:ta, mean(wShamSub(:,crop)) ,'c',compcrop(PcompSh<0.05)-(tbase+1),-0.4,'k*')
+    -50:ta, mean(wShamSub(:,crop)) ,'c',...
+    compcrop(PcompSh<pvalue)-(tbase+1),-0.4*ones(size(compcrop(PcompSh<pvalue))),'k*')
 legend('Difference','Suprathreshold','Subthreshold')
 title('Sub vs Suprathreshold Difference for Sham')
 xlabel('Time (ms)')
@@ -104,7 +109,7 @@ figure
 subplot(2,2,1)
 plot(-50:ta,diffSub(crop),'g', -50:ta, mean(wStimSub(:,crop)), 'b',...
     -50:ta, mean(wShamSub(:,crop)) ,'r',...
-    WindTime(PsubW<0.05),-0.4*ones(size(WindTime(PsubW<0.05))),'k*')
+    WindTime(PsubW<pvalue),-0.4*ones(size(WindTime(PsubW<pvalue))),'k*')
 legend('Difference','Stim','Sham')
 title(['Subthreshold Difference with Sliding Window=' num2str(window) 'ms'])
 xlabel('Time (ms)')
@@ -113,7 +118,7 @@ axis([-50 ta -0.4 0.4])
 subplot(2,2,3)
 plot(-50:ta,diffSup(crop),'g', -50:ta, mean(wStimSup(:,crop)), 'b',...
     -50:ta, mean(wShamSup(:,crop)) ,'r',...
-    WindTime(PsupW<0.05),-0.4*ones(size(WindTime(PsupW<0.05))),'k*')
+    WindTime(PsupW<pvalue),-0.4*ones(size(WindTime(PsupW<pvalue))),'k*')
 legend('Difference','Stim','Sham')
 title('Suprathreshold Difference')
 xlabel('Time (ms)')
@@ -122,7 +127,7 @@ axis([-50 ta -0.4 0.4])
 subplot(2,2,2)
 plot(-50:ta,diffStim(crop),'g', -50:ta, mean(wStimSup(:,crop)), 'b',...
     -50:ta, mean(wStimSub(:,crop)) ,'c',...
-    WindTime(PcompStW<0.05),-0.4*ones(size(WindTime(PcompStW<0.05))),'k*')
+    WindTime(PcompStW<pvalue),-0.4*ones(size(WindTime(PcompStW<pvalue))),'k*')
 legend('Difference','Suprathreshold','Subthreshold')
 title('Sub vs Suprathreshold Difference for Stim')
 xlabel('Time (ms)')
@@ -131,7 +136,7 @@ axis([-50 ta -0.4 0.4])
 subplot(2,2,4)
 plot(-50:ta,diffSham(crop),'g', -50:ta, mean(wShamSup(:,crop)), 'b',...
     -50:ta, mean(wShamSub(:,crop)) ,'c',...
-    WindTime(PcompShW<0.05),-0.4*ones(size(WindTime(PcompShW<0.05))),'k*')
+    WindTime(PcompShW<pvalue),-0.4*ones(size(WindTime(PcompShW<pvalue))),'k*')
 legend('Difference','Suprathreshold','Subthreshold')
 title('Sub vs Suprathreshold Difference for Sham')
 xlabel('Time (ms)')
