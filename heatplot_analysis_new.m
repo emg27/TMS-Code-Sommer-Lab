@@ -1,9 +1,9 @@
-% clear
-% [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
-% load([pathname filename])
-% [colormapfile, pathnamecolor]=uigetfile('*.mat')%'oxford_2014.mat';
-% load([pathnamecolor colormapfile])
-% close all
+clear
+[filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
+load([pathname filename])
+[colormapfile, pathnamecolor]=uigetfile('*.mat')%'oxford_2014.mat';
+load([pathnamecolor colormapfile])
+close all
 
 figure
 pSh=find(normptsh(:,1)==0);

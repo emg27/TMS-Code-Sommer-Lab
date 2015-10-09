@@ -106,7 +106,7 @@ plot(-50:ta,diffSub(crop),'g', -50:ta, mean(wStimSub(:,crop)), 'b',...
     -50:ta, mean(wShamSub(:,crop)) ,'r',...
     WindTime(PsubW<0.05),-0.4*ones(size(WindTime(PsubW<0.05))),'k*')
 legend('Difference','Stim','Sham')
-title(['Subthreshold Difference with Sliding Window=' num2str(window) 'ms'])
+title('Subthreshold Difference Windo')
 xlabel('Time (ms)')
 axis([-50 ta -0.4 0.4])
 
