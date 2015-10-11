@@ -22,6 +22,7 @@ base_save=int16([]);
 wave_save=[];
 z=1;
 counter=0;
+alignment=[]; %Check if the TMS Pulses are aligned correctly
 for k=1:size(s,2)
     count=k;
     if (length(s(k).Pulses)>0 ) & median(diff(s(k).Pulses)./1000)>4%&  size(s(k).Intensity,1)>0 &... length(s(k).Pulses)<=25 &
@@ -92,6 +93,11 @@ for k=1:size(s,2)
                 wave_save{z,2}=time;
                 z=z+1;
             end
+            if g==9 | length(cluster)==length(s(k).Pulses)
+                diffPulse=s(k).Pulses-1000*s(k).times(cluster);
+                alignment=[k g mean(diffPulse)];
+            end
+            pause
             %plot(time,s(k).waveforms(cluster,:))
             %title('All Waveforms')
 %             figure

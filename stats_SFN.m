@@ -10,72 +10,163 @@
 %%Significant difference between subthreshold for stim and sham; take the
 %%difference between the two wave forms and then take a paired t-test
 
-%Stim=avgSham(1:9,(tbase+1)-50:(tbase+1)+ta);
+pvalue=.05/(2004+(n*4));%1000;
 
 crop = (tbase+1)-50:(tbase+1)+ta;
 compcrop = (tbase+1):(tbase+1)+ta;
-wStimSub=avgStim_sub;
-wStimSup=avgStim_supra;
-wShamSub=avgSham_sub;
-wShamSup=avgSham_supra;
+Trunk=3+gauss_size:size(shamps,2)-gauss_size;
+
+wStimSub=stimps(stimps(:,2)<=50,Trunk);
+wStimSup=stimps(stimps(:,2)>50,Trunk);
+wShamSub=shamps(shamps(:,2)<=50,Trunk);
+wShamSup=shamps(shamps(:,2)>50,Trunk);
+
+%Create the difference plots
+diffSub=mean(wStimSub)-mean(wShamSub);
+diffSup=mean(wStimSup)-mean(wShamSup);
+diffStim=mean(wStimSup)-mean(wStimSub);
+diffSham=mean(wShamSup)-mean(wShamSub);
+
 
 %1)
-diffSub=wStimSub-wShamSub
-%[Hsub(1),Psub(1)]=ttest(diffSub(compcrop),zeros(size(diffSub(compcrop))));
-[Hsub,Psub]=ttest2(wStimSub(compcrop),wShamSub(compcrop));
+[Hsub,Psub]=ttest2(wStimSub(:,compcrop),wShamSub(:,compcrop));
+
 %2) 
-diffSup=wStimSup-wShamSup
-%[Hsup(2),Psup(2)]=ttest(diffSup(compcrop),zeros(size(diffSub(compcrop))));
-[Hsup,Psup]=ttest2(wStimSup(compcrop),wShamSup(compcrop));
+[Hsup,Psup]=ttest2(wStimSup(:,compcrop),wShamSup(:,compcrop));
 
 %3)
-diffStim=wStimSup-wStimSub
-%[Hcomp(3),Pcomp(3)]=ttest(diffStim(compcrop),zeros(size(diffStim(compcrop)))); 
-[HcompSt,PcompSt]=ttest2(wStimSup(compcrop),wStimSub(compcrop))
+[HcompSt,PcompSt]=ttest2(wStimSup(:,compcrop),wStimSub(:,compcrop));
 
 %4)
-diffSham=wShamSup-wShamSub
-%[Hcomp(4),Pcomp(4)]=ttest(diffSham(compcrop),zeros(size(diffSham(compcrop)))); 
-[HcompSh,PcompSh]=ttest2(wShamSup(compcrop),wShamSub(compcrop))
+[HcompSh,PcompSh]=ttest2(wShamSup(:,compcrop),wShamSub(:,compcrop));
 
 %Plot the difference
-
 figure
 subplot(2,2,1)
-plot(-50:ta,diffSub(crop),'g', -50:ta, wStimSub(crop), 'b', -50:ta, wShamSub(crop) ,'r')
+plot(-50:ta,diffSub(crop),'g', -50:ta, mean(wStimSub(:,crop)), 'b',...
+    -50:ta, mean(wShamSub(:,crop)) ,'r',...
+    compcrop(Psub<pvalue)-(tbase+1),-0.4*ones(size(compcrop(Psub<pvalue))),'k*')
 legend('Difference','Stim','Sham')
 title('Subthreshold Difference')
-xlabel(['p=' num2str(Psub)])
-xlim([-50 ta])
+xlabel('Time (ms)')
+axis([-50 ta -0.4 0.4])
 
 subplot(2,2,3)
-plot(-50:ta,diffSup(crop),'g', -50:ta, wStimSup(crop), 'b', -50:ta, wShamSup(crop) ,'r')
+plot(-50:ta,diffSup(crop),'g', -50:ta, mean(wStimSup(:,crop)), 'b',...
+    -50:ta, mean(wShamSup(:,crop)) ,'r',...
+    compcrop(Psup<pvalue)-(tbase+1),-0.4*ones(size(compcrop(Psup<pvalue))),'k*')
 legend('Difference','Stim','Sham')
 title('Suprathreshold Difference')
-xlabel(['p=' num2str(Psup)])
-xlim([-50 ta])
+xlabel('Time (ms)')
+axis([-50 ta -0.4 0.4])
 
 subplot(2,2,2)
-plot(-50:ta,diffStim(crop),'g', -50:ta, wStimSup(crop), 'b', -50:ta, wStimSub(crop) ,'c')
+plot(-50:ta,diffStim(crop),'g', -50:ta, mean(wStimSup(:,crop)), 'b',...
+    -50:ta, mean(wStimSub(:,crop)) ,'c',...
+    compcrop(PcompSt<pvalue)-(tbase+1),-0.4*ones(size(compcrop(PcompSt<pvalue))),'k*')
 legend('Difference','Suprathreshold','Subthreshold')
 title('Sub vs Suprathreshold Difference for Stim')
-xlabel(['p=' num2str(PcompSt)])
-xlim([-50 ta])
+xlabel('Time (ms)')
+axis([-50 ta -0.4 0.4])
 
 subplot(2,2,4)
-plot(-50:ta,diffSham(crop),'g', -50:ta, wShamSup(crop), 'b', -50:ta, wShamSub(crop) ,'c')
+plot(-50:ta,diffSham(crop),'g', -50:ta, mean(wShamSup(:,crop)), 'b',...
+    -50:ta, mean(wShamSub(:,crop)) ,'c',...
+    compcrop(PcompSh<pvalue)-(tbase+1),-0.4*ones(size(compcrop(PcompSh<pvalue))),'k*')
 legend('Difference','Suprathreshold','Subthreshold')
 title('Sub vs Suprathreshold Difference for Sham')
-xlabel(['p=' num2str(PcompSh)])
-xlim([-50 ta])
+xlabel('Time (ms)')
+axis([-50 ta -0.4 0.4])
+
+%%Create a sliding window average of 50ms of data
+n=0;
+window=20; %ms
+startpt=tbase+1;
+
+while (startpt+window)<(tbase+ta+1)
+n=n+1;
+WindTime(n)=n*window;
+StSubWin(:,n)=mean(wStimSub(:,startpt:startpt+window)')';
+StSupWin(:,n)=mean(wStimSup(:,startpt:startpt+window)')';
+ShSubWin(:,n)=mean(wShamSub(:,startpt:startpt+window)')';
+ShSupWin(:,n)=mean(wShamSup(:,startpt:startpt+window)')';
+startpt=tbase+1+ceil(n*window/2);
+
+end
+pvalueW=.05/(2004+(n*4));%(n*4);
+
+%Run TTest over the window averaged data
+%1)
+[HsubW,PsubW]=ttest2(StSubWin,ShSubWin);
+%2) 
+[HsupW,PsupW]=ttest2(StSupWin,ShSupWin);
+%3)
+[HcompStW,PcompStW]=ttest2(StSupWin,StSubWin);
+%4)
+[HcompShW,PcompShW]=ttest2(ShSupWin,ShSubWin);
+
+%Plot the difference
+figure
+subplot(2,2,1)
+plot(-50:ta,diffSub(crop),'g', -50:ta, mean(wStimSub(:,crop)), 'b',...
+    -50:ta, mean(wShamSub(:,crop)) ,'r',...
+    WindTime(PsubW<pvalueW),-0.4*ones(size(WindTime(PsubW<pvalueW))),'k*')
+legend('Difference','Stim','Sham')
+title(['Subthreshold Difference with Sliding Window=' num2str(window) 'ms'])
+xlabel('Time (ms)')
+axis([-50 ta -0.4 0.4])
+
+subplot(2,2,3)
+plot(-50:ta,diffSup(crop),'g', -50:ta, mean(wStimSup(:,crop)), 'b',...
+    -50:ta, mean(wShamSup(:,crop)) ,'r',...
+    WindTime(PsupW<pvalueW),-0.4*ones(size(WindTime(PsupW<pvalueW))),'k*')
+legend('Difference','Stim','Sham')
+title('Suprathreshold Difference')
+xlabel('Time (ms)')
+axis([-50 ta -0.4 0.4])
+
+subplot(2,2,2)
+plot(-50:ta,diffStim(crop),'g', -50:ta, mean(wStimSup(:,crop)), 'b',...
+    -50:ta, mean(wStimSub(:,crop)) ,'c',...
+    WindTime(PcompStW<pvalueW),-0.4*ones(size(WindTime(PcompStW<pvalueW))),'k*')
+legend('Difference','Suprathreshold','Subthreshold')
+title('Sub vs Suprathreshold Difference for Stim')
+xlabel('Time (ms)')
+axis([-50 ta -0.4 0.4])
+
+subplot(2,2,4)
+plot(-50:ta,diffSham(crop),'g', -50:ta, mean(wShamSup(:,crop)), 'b',...
+    -50:ta, mean(wShamSub(:,crop)) ,'c',...
+    WindTime(PcompShW<pvalueW),-0.4*ones(size(WindTime(PcompShW<pvalueW))),'k*')
+legend('Difference','Suprathreshold','Subthreshold')
+title('Sub vs Suprathreshold Difference for Sham')
+xlabel('Time (ms)')
+axis([-50 ta -0.4 0.4])
+
 %%Extra assignment: plot the mean firing rate of dur(T) vs intensity and
-%%dur(T) length.
+%%dur(T) length. Necessary matrices: avgSham and avgStim
 
+Width=5:10:300; %increase averaging window by 10 
 
-% Width=5:10:300; %increase averaging window by 10 
-% 
-% [inten,width]=meashgrid(0:10:90,Width);
-% Fire=0.*inten(:);
-% 
-% for n=1:length(Fire)
-% end
+[inten,width]=meshgrid(10:10:90,Width);
+FireSt=0.*inten;
+FireSh=0.*inten;
+startpt=tbase+1;
+for n=1:9
+    for m=1:length(Width)
+        FireSt(m,n)=mean(avgStim(n,startpt:startpt+Width(m)));
+        FireSh(m,n)=mean(avgSham(n,startpt:startpt+Width(m)));
+    end
+end
+
+figure; mesh(inten,width,FireSt)
+xlabel('Intensity')
+ylabel('Average Width after TMS Pulse (ms)')
+zlabel('Spike Density Function')
+title('Stim')
+figure; mesh(inten,width,FireSh)
+xlabel('Intensity')
+ylabel('Average Width after TMS Pulse (ms)')
+zlabel('Spike Density Function')
+title('Sham')
+

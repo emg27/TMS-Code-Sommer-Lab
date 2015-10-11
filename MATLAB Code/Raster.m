@@ -1,4 +1,4 @@
-function[points,position, num_spike,blocks]=Raster(pulsetime,time_b,time_a,spikes,blocks,num_spike)
+function[points,position, num_spike,blocks]=Raster(pulsetime,time_b,time_a,spikes,shift,blocks,num_spike)
 %%Raster Plots: Created March 14, 2013 This file will create basic raster
 %%plots for the specified for the values necessary:
 %%Raster(pulsetime,time_b,time_a,spikes,blocks,num_spikes)
@@ -13,6 +13,10 @@ function[points,position, num_spike,blocks]=Raster(pulsetime,time_b,time_a,spike
 
 %%function
 if nargin==4
+    shift=0;
+    blocks=zeros(length(pulsetime),1);
+    num_spike=zeros(length(pulsetime),1);
+elseif nargin==5
     blocks=zeros(length(pulsetime),1);
     num_spike=zeros(length(pulsetime),1);
 end
@@ -30,7 +34,7 @@ for n=1:length(pulsetime)
     
    point=trial-pulsetime(n);
    if ~isempty(point)
-       pointA=line([point point]', [n-0.9 n-0.1]); hold on
+       pointA=line([point point]', [shift+n-0.9 shift+n-0.1]); hold on
        points=[points pointA'];
    end
     %num_plot(n,1)=text(-time_b-20,[n-.5],sprintf('n=%0.0d',num_spike(n))); %prints number of spikes per trial
