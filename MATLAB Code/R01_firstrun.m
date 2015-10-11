@@ -9,8 +9,8 @@ clear
 %   waveforms (waveforms of each of the n spikes)
 [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
 load([pathname filename])
-filepath=uigetdir('C:\','Pick Where is save the images');
-close all
+% filepath=uigetdir('C:\','Pick Where is save the images');
+% close all
 %s=rmfield(s,'width');
 %s=rmfield(s,'timept');
 
@@ -94,10 +94,18 @@ for k=1:size(s,2)
                 z=z+1;
             end
             if g==9 | length(cluster)==length(s(k).Pulses)
-                diffPulse=s(k).Pulses-1000*s(k).times(cluster);
-                alignment=[k g mean(diffPulse)];
+                if length(s(k).Pulses)==length(s(k).times(cluster))
+                    diffPulse=s(k).Pulses-1000*s(k).times(cluster);
+                elseif length(s(k).Pulses)<length(s(k).times(cluster))
+                    diffPulse=s(k).Pulses-1000*s(k).times(cluster(1:length(s(k).Pulses)));
+                elseif length(s(k).Pulses)>length(s(k).times(cluster))
+                    diffPulse=s(k).Pulses(1:length(cluster))-1000*s(k).times(cluster);
+                else
+                    continue
+                end
+                alignment(k,:)=[k mean(diffPulse)];
             end
-            pause
+            close
             %plot(time,s(k).waveforms(cluster,:))
             %title('All Waveforms')
 %             figure

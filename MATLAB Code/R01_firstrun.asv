@@ -10,7 +10,8 @@ clear
 [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
 load([pathname filename])
 filepath=uigetdir('C:\','Pick Where is save the images');
-close all
+% close all
+
 %s=rmfield(s,'width');
 %s=rmfield(s,'timept');
 
@@ -23,7 +24,7 @@ wave_save=[];
 z=1;
 counter=0;
 alignment=[]; %Check if the TMS Pulses are aligned correctly
-for k=1:size(s,2)
+for k=352:size(s,2)
     count=k;
     if (length(s(k).Pulses)>0 ) & median(diff(s(k).Pulses)./1000)>4%&  size(s(k).Intensity,1)>0 &... length(s(k).Pulses)<=25 &
             %strcmp(s(k).Stim(1),'Stim')==1) %& mean(diff(s(k).Pulses)./1000)<4)% & mean(diff(s(k).Pulses)./1000)>4)
@@ -93,7 +94,19 @@ for k=1:size(s,2)
                 wave_save{z,2}=time;
                 z=z+1;
             end
-            drawnow
+            if g==9 | length(cluster)==length(s(k).Pulses)
+                if length(s(k).Pulses)==length(s(k).times(cluster))
+                    diffPulse=s(k).Pulses-1000*s(k).times(cluster);
+                elseif length(s(k).Pulses)<length(s(k).times(cluster))
+                    diffPulse=s(k).Pulses-1000*s(k).times(cluster(1:length(s(k).Pulses)));
+                elseif length(s(k).Pulses)>length(s(k).times(cluster))
+                    diffPulse=s(k).Pulses(1:length(cluster))-1000*s(k).times(cluster);
+                else
+                    continue
+                end
+                alignment=[k g mean(diffPulse)];
+            end
+            pause
             %plot(time,s(k).waveforms(cluster,:))
             %title('All Waveforms')
 %             figure
