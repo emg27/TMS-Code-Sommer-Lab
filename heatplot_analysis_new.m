@@ -184,3 +184,6 @@ colormap(HeatPlotMap)
 colorbar
 subplot(1,5,5)
 imagesc(cell2mat(AreaDate(pSh,3)))
+
+[newfilename,saveloc]=uiputfile('*.mat'); %Change to the location where you want to save to
+save([saveloc newfilename],'stimps','shamps','time','tbase','ta','gauss_size')

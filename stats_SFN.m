@@ -10,7 +10,6 @@
 %%Significant difference between subthreshold for stim and sham; take the
 %%difference between the two wave forms and then take a paired t-test
 
-%Stim=avgSham(1:9,(tbase+1)-50:(tbase+1)+ta);
 pvalue=.05/1000;
 
 crop = (tbase+1)-50:(tbase+1)+ta;
@@ -143,13 +142,29 @@ xlabel('Time (ms)')
 axis([-50 ta -0.4 0.4])
 
 %%Extra assignment: plot the mean firing rate of dur(T) vs intensity and
-%%dur(T) length.
+%%dur(T) length. Necessary matrices: avgSham and avgStim
 
+Width=5:10:300; %increase averaging window by 10 
 
-% Width=5:10:300; %increase averaging window by 10 
-% 
-% [inten,width]=meashgrid(0:10:90,Width);
-% Fire=0.*inten(:);
-% 
-% for n=1:length(Fire)
-% end
+[inten,width]=meshgrid(10:10:90,Width);
+FireSt=0.*inten;
+FireSh=0.*inten;
+startpt=tbase+1;
+for n=1:9
+    for m=1:length(Width)
+        FireSt(m,n)=mean(avgStim(n,startpt:startpt+Width(m)));
+        FireSh(m,n)=mean(avgSham(n,startpt:startpt+Width(m)));
+    end
+end
+
+figure; mesh(inten,width,FireSt)
+xlabel('Intensity')
+ylabel('Average Width after TMS Pulse (ms)')
+zlabel('Spike Density Function')
+title('Stim')
+figure; mesh(inten,width,FireSh)
+xlabel('Intensity')
+ylabel('Average Width after TMS Pulse (ms)')
+zlabel('Spike Density Function')
+title('Sham')
+
