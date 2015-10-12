@@ -11,12 +11,12 @@
 % load([pathname filename])
 
 %Establish your desire values
-date='20130828';%'20150810'; %Date to take the spiking data
+date='20140122';%'20150810'; %Date to take the spiking data
 stimCond='Stim'; %Set which stimulation condition you are interested in
-neuron=9; %Which cluster will the neuron be in
+neuron=3; %Which cluster will the neuron be in
 N=10; %The number of TMS pulses (trials you would like to show on the plot)
-ta=4000;
-tb=4000;
+ta=300;
+tb=100;
 
 %Function
 ColorSet=@(targetcode, shift) [1/targetcode targetcode/9 shift];
@@ -28,8 +28,8 @@ if size(fileloc,2)<=0
 end
 
 raster=figure;
-%line([0 0],[0 9*N],'Color','k')
-line([-tb ta],[10 10;20 20;30 30;40 40;50 50;60 60;70 70;80 80;90 90],...
+line([0 0],[0 9*N],'Color','k')
+line([-tb ta],[N N;2*N 2*N;3*N 3*N;4*N 4*N;5*N 5*N;6*N 6*N;7*N 7*N;8*N 8*N;9*N 9*N],...
     'Color', 'k', 'LineStyle', '--')
 check=zeros(1,9);
 for n=1:size(fileloc,2)

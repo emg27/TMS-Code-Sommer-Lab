@@ -14,8 +14,7 @@ peakpoints=zeros(9,2);
 peaktimes=peakpoints;
 
 %Colormap Function
-ColorSet=@(targetcode, shift) [1./targetcode targetcode./9 shift];
-
+ColorSet=@(targetcode, shift) [1/targetcode targetcode/9 shift];
 
 Trunk=3+gauss_size:size(shamps,2)-gauss_size;
 HeatPlotMap=sfn2015map; %Or use either CmapHeatPlot4 or CmapHeatPlot6
@@ -24,7 +23,6 @@ time=-tbase:ta;
 plotrange=[(tbase+1-Tbefpulse):tbase+ta+1];
 %plotrange=[3+gauss_size+tbase+1-Tbefpulse:size(shamps,2)+1-gauss_size];
 for n=1:9
-    ColorInten(n,:)=ColorSet(10-n,.5);
 pos=find(shamps(:,2)<=n*10 & shamps(:,2)>10*(n-1));
 
 %subplot(6,3,n);imagesc(shamps(pos,3+gauss_size:end-gauss_size),[-1 1])
@@ -105,7 +103,7 @@ end
 
 figure
 subplot(2,1,1)
-stimInten=plot(-50:ta,avgSham(1:9,(tbase+1)-50:(tbase+1)+ta)','LineWidth',2);
+plot(-50:ta,avgSham(1:9,(tbase+1)-50:(tbase+1)+ta)','LineWidth',2);
 hold on
 line([0 0],[-.2 .5],'Color','k')
 %legend('10','20','30','40','50','60','70','80','90')
@@ -113,17 +111,12 @@ title(['Sham, Gauss=' num2str(gauss_size) 'ms'])
 xlim([-50 200])
 %axis([tbase-43 tbase+ta+3 -.15 .4])
 subplot(2,1,2)
-shamInten=plot(-50:ta,avgStim(1:9,(tbase+1)-50:(tbase+1)+ta)','LineWidth',2);
+plot(-50:ta,avgStim(1:9,(tbase+1)-50:(tbase+1)+ta)','LineWidth',2);
 line([0 0],[-.2 .5],'Color','k')
 legend('10','20','30','40','50','60','70','80','90')
 title(['Stim, Gauss=' num2str(gauss_size) 'ms'])
 %axis([tbase-43 tbase+ta+3 -.15 .4])
 xlim([-50 200])
-
-for n=1:9
-    set(stimInten(n),{'Color'},{ColorInten(n,:)});
-    set(shamInten(n),{'Color'},{ColorInten(n,:)});
-end
 
 avgStim_sub = mean(avgStim(1:5,:));
 std_Stim_sub = std(avgStim(1:5,:));
