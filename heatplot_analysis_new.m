@@ -1,9 +1,9 @@
-clear
-[filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
-load([pathname filename])
-[colormapfile, pathnamecolor]=uigetfile('*.mat')%'oxford_2014.mat';
-load([pathnamecolor colormapfile])
-close all
+% clear
+% [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
+% load([pathname filename])
+% [colormapfile, pathnamecolor]=uigetfile('*.mat')%'oxford_2014.mat';
+% load([pathnamecolor colormapfile])
+ close all
 
 figure
 pSh=find(normptsh(:,1)==0);
@@ -144,20 +144,25 @@ std_Sham_supra = std(avgSham(6:9,:));
 figure
 subplot(2,1,1)
 crop = (tbase+1)-50:(tbase+1)+ta;
-plot(-50:ta,avgSham_sub(crop),'b')
-%plot_variance(-50:ta,avgSham_sub(crop)-std_Sham_sub(crop),avgSham_sub(crop)+std_Sham_sub(crop),'b');
+plot(-50:ta,avgSham_sub(crop),'b',-50:ta, 0*(-50:ta),'k--','LineWidth',2)
 hold on
-plot(-50:ta,avgSham_supra(crop),'r');
+plot(-50:ta,[avgSham_sub(crop)-std_Sham_sub(crop); avgSham_sub(crop)+std_Sham_sub(crop)],'b');
+% plot_variance(-50:ta,avgSham_sub(crop)-std_Sham_sub(crop),avgSham_sub(crop)+std_Sham_sub(crop),'b');
+plot(-50:ta,avgSham_supra(crop),'r','LineWidth',2);
 %plot_variance(-50:ta,avgSham_supra(crop)-std_Sham_supra(crop),avgSham_supra(crop)+std_Sham_supra(crop),'r');
+plot(-50:ta,[avgSham_supra(crop)-std_Sham_supra(crop);avgSham_supra(crop)+std_Sham_supra(crop)],'r');
 line([0 0],[-.2 .5],'Color','k')
 title(['Sham, Gauss=' num2str(gauss_size) 'ms'])
 xlim([-50 200])
 subplot(2,1,2)
-plot(-50:ta,avgStim_sub(crop),'b')
-%plot_variance(-50:ta,avgStim_sub(crop)-std_Stim_sub(crop),avgStim_sub(crop)+std_Stim_sub(crop),'b');
+plot(-50:ta,avgStim_sub(crop),'b','LineWidth',2)
 hold on
-plot(-50:ta,avgStim_supra(crop),'r');
+plot(-50:ta,avgStim_supra(crop),'r',-50:ta, 0*(-50:ta),'k--','LineWidth',2);
+%plot_variance(-50:ta,avgStim_sub(crop)-std_Stim_sub(crop),avgStim_sub(crop)+std_Stim_sub(crop),'b');
+plot(-50:ta,[avgStim_sub(crop)-std_Stim_sub(crop);avgStim_sub(crop)+std_Stim_sub(crop)],'b');
+
 %plot_variance(-50:ta,avgStim_supra(crop)-std_Stim_supra(crop),avgStim_supra(crop)+std_Stim_supra(crop),'r');
+plot(-50:ta,[avgStim_supra(crop)-std_Stim_supra(crop);avgStim_supra(crop)+std_Stim_supra(crop)],'r');
 line([0 0],[-.2 .5],'Color','k')
 legend('Subthreshold','Suprathreshold')
 title(['Stim, Gauss=' num2str(gauss_size) 'ms'])
