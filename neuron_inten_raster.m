@@ -9,9 +9,10 @@
 % clear
 % [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
 % load([pathname filename])
+close all
 
 %Establish your desire values
-date='20140122';%'20150810'; %Date to take the spiking data
+date='20150814';%'20150810'; %Date to take the spiking data
 stimCond='Stim'; %Set which stimulation condition you are interested in
 neuron=3; %Which cluster will the neuron be in
 N=10; %The number of TMS pulses (trials you would like to show on the plot)
@@ -22,7 +23,7 @@ tb=100;
 ColorSet=@(targetcode, shift) [1/targetcode targetcode/9 shift];
 
 %Find your file locations
-fileloc=find(arrayfun(@(n) strncmp(s(n).Name, '20150810',8), 1:numel(s)));
+fileloc=find(arrayfun(@(n) strncmp(s(n).Name, date,8), 1:numel(s)));
 if size(fileloc,2)<=0
     break
 end
@@ -35,7 +36,7 @@ check=zeros(1,9);
 for n=1:size(fileloc,2)
     block=s(fileloc(n));
     inten=str2num(block.Intensity{1})/10;
-    if strcmp(block.Stim(1),stimCond) & length(s(n).Pulses)>0 & check(inten)==0
+    if strcmp(block.Stim(1),stimCond) & length(s(n).Pulses)>0 & inten<=9 & check(inten)==0
         clusterpos=find(block.clusters==neuron);
     else
         continue
