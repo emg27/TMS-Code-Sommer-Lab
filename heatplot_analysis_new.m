@@ -107,7 +107,8 @@ end
 
 figure
 subplot(2,1,1)
-stimInten=plot(-50:ta,avgSham(1:9,(tbase+1)-50:(tbase+1)+ta)','LineWidth',2);
+stimInten=plot(-50:ta,avgSham(1:9,(tbase+1)-50:(tbase+1)+ta)',...
+    -50:ta, 0*(-50:ta),'k--','LineWidth',2);
 hold on
 line([0 0],[-.4 .8],'Color','k')
 legend(['Sh-' num2str(SHN(1)) ' ST-' num2str(STN(1))],...
@@ -119,7 +120,8 @@ title(['Sham, Gauss=' num2str(gauss_size) 'ms'])
 %xlim([-50 200])
 axis([-50 200 -.4 .8])
 subplot(2,1,2)
-shamInten=plot(-50:ta,avgStim(1:9,(tbase+1)-50:(tbase+1)+ta)','LineWidth',2);
+shamInten=plot(-50:ta,avgStim(1:9,(tbase+1)-50:(tbase+1)+ta)',...
+    -50:ta, 0*(-50:ta),'k--','LineWidth',2);
 line([0 0],[-.4 .8],'Color','k')
 legend('10','20','30','40','50','60','70','80','90')
 title(['Stim, Gauss=' num2str(gauss_size) 'ms'])

@@ -9,12 +9,12 @@
 % clear
 % [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
 % load([pathname filename])
-close all
+% close all
 
 %Establish your desire values
-date='20150814';%'20150810'; %Date to take the spiking data
+date='20150810'; %Date to take the spiking data
 stimCond='Stim'; %Set which stimulation condition you are interested in
-neuron=3; %Which cluster will the neuron be in
+neuron=2; %Which cluster will the neuron be in
 N=10; %The number of TMS pulses (trials you would like to show on the plot)
 ta=300;
 tb=100;

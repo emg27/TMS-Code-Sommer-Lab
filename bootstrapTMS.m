@@ -60,14 +60,14 @@ for k=1:size(wStimSup,2)
 end
 
 figure;
-subplot(2,1,1)
+subplot(2,2,1)
 hold on
 %plot_variance(time,mean(avgBtStSup)-ciStSup,mean(avgBtStSup)+ciStSup,[0 .75 1])
 %plot_variance(time,mean(avgBtShSup)-ciStSup,mean(avgBtShSup)+ciStSup,[1 .75 0])
 plot_variance(time,mean(diffBtSup)-cidiffSup,mean(diffBtSup)+cidiffSup,[.5 .5 .5])
 plot(time,mean(avgBtStSup),'b',time,mean(avgBtShSup),'r',time,mean(diffBtSup),'k')
 title('Subthreshold')
-subplot(2,1,2)
+subplot(2,2,2)
 plot_variance(time,mean(diffBtSub)-cidiffSub,mean(diffBtSub)+cidiffSub,[.5 .5 .5])
 hold on
 plot(time,mean(avgBtStSub),'c',time,mean(avgBtShSub),'m',time,mean(diffBtSub),'k')
