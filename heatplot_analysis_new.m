@@ -36,6 +36,7 @@ line([Tbefpulse+1 Tbefpulse+1],[0 length(pos)+1],'Color','k')
 subplot(6,3,n+9)
 avgSham(n,:)=nanmean(shamps(pos,Trunk));
 avgShamSM(n,:)=smooth(avgSham(n,:),25);
+SHN(n)=size(pos,1);
 allsham=shamps(pos,Trunk);
 tempSh=nanmax(allsham(:,tbase:tbase+101)');
 
@@ -74,6 +75,7 @@ line([Tbefpulse+1 Tbefpulse+1],[0 length(pos)+1],'Color','k')
 subplot(6,3,n+9)
 avgStim(n,:)=nanmean(stimps(pos,Trunk));
 avgStimSM(n,:)=smooth(avgStim(n,:),25);
+STN(n)=size(pos,1);
 allstim=stimps(pos,Trunk);
 tempSt=nanmax(allstim(:,tbase:tbase+101)');
 for j=1:length(pos)
@@ -107,18 +109,22 @@ figure
 subplot(2,1,1)
 stimInten=plot(-50:ta,avgSham(1:9,(tbase+1)-50:(tbase+1)+ta)','LineWidth',2);
 hold on
-line([0 0],[-.2 .5],'Color','k')
-%legend('10','20','30','40','50','60','70','80','90')
+line([0 0],[-.4 .8],'Color','k')
+legend(['Sh-' num2str(SHN(1)) ' ST-' num2str(STN(1))],...
+    ['Sh-' num2str(SHN(2)) ' ST-' num2str(STN(2))],['Sh-' num2str(SHN(3)) ' ST-' num2str(STN(3))],...
+    ['Sh-' num2str(SHN(4)) ' ST-' num2str(STN(4))],['Sh-' num2str(SHN(5)) ' ST-' num2str(STN(5))],...
+    ['Sh-' num2str(SHN(6)) ' ST-' num2str(STN(6))],['Sh-' num2str(SHN(7)) ' ST-' num2str(STN(7))],...
+    ['Sh-' num2str(SHN(8)) ' ST-' num2str(STN(8))],['Sh-' num2str(SHN(9)) ' ST-' num2str(STN(9))])
 title(['Sham, Gauss=' num2str(gauss_size) 'ms'])
-xlim([-50 200])
-%axis([tbase-43 tbase+ta+3 -.15 .4])
+%xlim([-50 200])
+axis([-50 200 -.4 .8])
 subplot(2,1,2)
 shamInten=plot(-50:ta,avgStim(1:9,(tbase+1)-50:(tbase+1)+ta)','LineWidth',2);
-line([0 0],[-.2 .5],'Color','k')
+line([0 0],[-.4 .8],'Color','k')
 legend('10','20','30','40','50','60','70','80','90')
 title(['Stim, Gauss=' num2str(gauss_size) 'ms'])
-%axis([tbase-43 tbase+ta+3 -.15 .4])
-xlim([-50 200])
+axis([-50 200 -.4 .8])
+%xlim([-50 200])
 
 for n=1:9
     set(stimInten(n),{'Color'},{ColorInten(n,:)});
