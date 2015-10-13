@@ -1,8 +1,8 @@
-% clear
-% [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
-% load([pathname filename])
-% [colormapfile, pathnamecolor]=uigetfile('*.mat')%'oxford_2014.mat';
-% load([pathnamecolor colormapfile])
+clear
+[filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
+load([pathname filename])
+[colormapfile, pathnamecolor]=uigetfile('*.mat')%'oxford_2014.mat';
+load([pathnamecolor colormapfile])
  close all
 
 figure
@@ -21,7 +21,7 @@ Trunk=3+gauss_size:size(shamps,2)-gauss_size;
 HeatPlotMap=sfn2015map; %Or use either CmapHeatPlot4 or CmapHeatPlot6
 Tbefpulse=200;
 time=-tbase:ta;
-plotrange=[(tbase+1-Tbefpulse):tbase+ta+1];
+plotrange=[(tbase+1-Tbefpulse):tbase+400+1];
 %plotrange=[3+gauss_size+tbase+1-Tbefpulse:size(shamps,2)+1-gauss_size];
 for n=1:9
     ColorInten(n,:)=ColorSet(10-n,.5);

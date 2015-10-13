@@ -8,6 +8,7 @@ load([pathname filename])
 %Load the values.
 pvalue=.05/1000;
 
+ta=400;
 crop = (tbase+1)-50:(tbase+1)+ta;
 compcrop = (tbase+1):(tbase+1)+ta;
 Trunk=3+gauss_size:size(shamps,2)-gauss_size;
@@ -66,11 +67,13 @@ hold on
 %plot_variance(time,mean(avgBtShSup)-ciStSup,mean(avgBtShSup)+ciStSup,[1 .75 0])
 plot_variance(time(crop),mean(diffBtSup(:,crop))-cidiffSup(crop),mean(diffBtSup(:,crop))+cidiffSup(crop),[.5 .5 .5])
 plot(time(crop),mean(avgBtStSup(:,crop)),'b',time(crop),mean(avgBtShSup(:,crop)),'r',time(crop),mean(diffBtSup(:,crop)),'k')
+xlim([time(crop(1)) time(crop(end))])
 title('Subthreshold')
 subplot(2,2,2)
 plot_variance(time(crop),mean(diffBtSub(:,crop))-cidiffSub(crop),mean(diffBtSub(:,crop))+cidiffSub(crop),[.5 .5 .5])
 hold on
 plot(time(crop),mean(avgBtStSub(:,crop)),'c',time(crop),mean(avgBtShSub(:,crop)),'m',time(crop),mean(diffBtSub(:,crop)),'k')
+xlim([time(crop(1)) time(crop(end))])
 title('Subthreshold')
 
 % figure;

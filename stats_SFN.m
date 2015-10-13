@@ -10,10 +10,9 @@
 %%Significant difference between subthreshold for stim and sham; take the
 %%difference between the two wave forms and then take a paired t-test
 
-pvalue=.05/(2004+(n*4));%1000;
-
-crop = (tbase+1)-50:(tbase+1)+ta;
-compcrop = (tbase+1):(tbase+1)+ta;
+ta=400;
+crop = (tbase+1)-50:(tbase+1)+400;
+compcrop = (tbase+1):(tbase+1)+400;
 Trunk=3+gauss_size:size(shamps,2)-gauss_size;
 
 wStimSub=stimps(stimps(:,2)<=50,Trunk);
@@ -39,6 +38,36 @@ diffSham=mean(wShamSup)-mean(wShamSub);
 
 %4)
 [HcompSh,PcompSh]=ttest2(wShamSup(:,compcrop),wShamSub(:,compcrop));
+
+%%Create a sliding window average of 50ms of data
+n=0;
+window=20; %ms
+startpt=tbase+1;
+
+while (startpt+window)<(compcrop(end))
+n=n+1;
+WindTime(n)=n*window;
+StSubWin(:,n)=mean(wStimSub(:,startpt:startpt+window)')';
+StSupWin(:,n)=mean(wStimSup(:,startpt:startpt+window)')';
+ShSubWin(:,n)=mean(wShamSub(:,startpt:startpt+window)')';
+ShSupWin(:,n)=mean(wShamSup(:,startpt:startpt+window)')';
+startpt=tbase+1+ceil(n*window/2);
+
+end
+
+
+%Run TTest over the window averaged data
+%1)
+[HsubW,PsubW]=ttest2(StSubWin,ShSubWin);
+%2) 
+[HsupW,PsupW]=ttest2(StSupWin,ShSupWin);
+%3)
+[HcompStW,PcompStW]=ttest2(StSupWin,StSubWin);
+%4)
+[HcompShW,PcompShW]=ttest2(ShSupWin,ShSubWin);
+
+%Pvalue
+pvalue=.05/(4*size(compcrop,2)+(n*4));%1000;
 
 %Plot the difference
 figure
@@ -78,39 +107,12 @@ title('Sub vs Suprathreshold Difference for Sham')
 xlabel('Time (ms)')
 axis([-50 ta -0.4 0.4])
 
-%%Create a sliding window average of 50ms of data
-n=0;
-window=20; %ms
-startpt=tbase+1;
-
-while (startpt+window)<(tbase+ta+1)
-n=n+1;
-WindTime(n)=n*window;
-StSubWin(:,n)=mean(wStimSub(:,startpt:startpt+window)')';
-StSupWin(:,n)=mean(wStimSup(:,startpt:startpt+window)')';
-ShSubWin(:,n)=mean(wShamSub(:,startpt:startpt+window)')';
-ShSupWin(:,n)=mean(wShamSup(:,startpt:startpt+window)')';
-startpt=tbase+1+ceil(n*window/2);
-
-end
-pvalueW=.05/(2004+(n*4));%(n*4);
-
-%Run TTest over the window averaged data
-%1)
-[HsubW,PsubW]=ttest2(StSubWin,ShSubWin);
-%2) 
-[HsupW,PsupW]=ttest2(StSupWin,ShSupWin);
-%3)
-[HcompStW,PcompStW]=ttest2(StSupWin,StSubWin);
-%4)
-[HcompShW,PcompShW]=ttest2(ShSupWin,ShSubWin);
-
-%Plot the difference
+%Plot the difference Window
 figure
 subplot(2,2,1)
 plot(-50:ta,diffSub(crop),'g', -50:ta, mean(wStimSub(:,crop)), 'b',...
     -50:ta, mean(wShamSub(:,crop)) ,'r',...
-    WindTime(PsubW<pvalueW),-0.4*ones(size(WindTime(PsubW<pvalueW))),'k*')
+    WindTime(PsubW<pvalue),-0.4*ones(size(WindTime(PsubW<pvalue))),'k*')
 legend('Difference','Stim','Sham')
 title(['Subthreshold Difference with Sliding Window=' num2str(window) 'ms'])
 xlabel('Time (ms)')
@@ -119,7 +121,7 @@ axis([-50 ta -0.4 0.4])
 subplot(2,2,3)
 plot(-50:ta,diffSup(crop),'g', -50:ta, mean(wStimSup(:,crop)), 'b',...
     -50:ta, mean(wShamSup(:,crop)) ,'r',...
-    WindTime(PsupW<pvalueW),-0.4*ones(size(WindTime(PsupW<pvalueW))),'k*')
+    WindTime(PsupW<pvalue),-0.4*ones(size(WindTime(PsupW<pvalue))),'k*')
 legend('Difference','Stim','Sham')
 title('Suprathreshold Difference')
 xlabel('Time (ms)')
@@ -128,7 +130,7 @@ axis([-50 ta -0.4 0.4])
 subplot(2,2,2)
 plot(-50:ta,diffStim(crop),'g', -50:ta, mean(wStimSup(:,crop)), 'b',...
     -50:ta, mean(wStimSub(:,crop)) ,'c',...
-    WindTime(PcompStW<pvalueW),-0.4*ones(size(WindTime(PcompStW<pvalueW))),'k*')
+    WindTime(PcompStW<pvalue),-0.4*ones(size(WindTime(PcompStW<pvalue))),'k*')
 legend('Difference','Suprathreshold','Subthreshold')
 title('Sub vs Suprathreshold Difference for Stim')
 xlabel('Time (ms)')
@@ -137,7 +139,7 @@ axis([-50 ta -0.4 0.4])
 subplot(2,2,4)
 plot(-50:ta,diffSham(crop),'g', -50:ta, mean(wShamSup(:,crop)), 'b',...
     -50:ta, mean(wShamSub(:,crop)) ,'c',...
-    WindTime(PcompShW<pvalueW),-0.4*ones(size(WindTime(PcompShW<pvalueW))),'k*')
+    WindTime(PcompShW<pvalue),-0.4*ones(size(WindTime(PcompShW<pvalue))),'k*')
 legend('Difference','Suprathreshold','Subthreshold')
 title('Sub vs Suprathreshold Difference for Sham')
 xlabel('Time (ms)')
