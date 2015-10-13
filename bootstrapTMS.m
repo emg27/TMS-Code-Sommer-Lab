@@ -64,13 +64,13 @@ subplot(2,2,1)
 hold on
 %plot_variance(time,mean(avgBtStSup)-ciStSup,mean(avgBtStSup)+ciStSup,[0 .75 1])
 %plot_variance(time,mean(avgBtShSup)-ciStSup,mean(avgBtShSup)+ciStSup,[1 .75 0])
-plot_variance(time,mean(diffBtSup)-cidiffSup,mean(diffBtSup)+cidiffSup,[.5 .5 .5])
-plot(time,mean(avgBtStSup),'b',time,mean(avgBtShSup),'r',time,mean(diffBtSup),'k')
+plot_variance(time(crop),mean(diffBtSup(:,crop))-cidiffSup(crop),mean(diffBtSup(:,crop))+cidiffSup(crop),[.5 .5 .5])
+plot(time(crop),mean(avgBtStSup(:,crop)),'b',time(crop),mean(avgBtShSup(:,crop)),'r',time(crop),mean(diffBtSup(:,crop)),'k')
 title('Subthreshold')
 subplot(2,2,2)
-plot_variance(time,mean(diffBtSub)-cidiffSub,mean(diffBtSub)+cidiffSub,[.5 .5 .5])
+plot_variance(time(crop),mean(diffBtSub(:,crop))-cidiffSub(crop),mean(diffBtSub(:,crop))+cidiffSub(crop),[.5 .5 .5])
 hold on
-plot(time,mean(avgBtStSub),'c',time,mean(avgBtShSub),'m',time,mean(diffBtSub),'k')
+plot(time(crop),mean(avgBtStSub(:,crop)),'c',time(crop),mean(avgBtShSub(:,crop)),'m',time(crop),mean(diffBtSub(:,crop)),'k')
 title('Subthreshold')
 
 % figure;
