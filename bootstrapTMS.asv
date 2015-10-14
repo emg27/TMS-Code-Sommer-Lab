@@ -83,35 +83,29 @@ for k=1:size(wStimSup,2)
 end
 
 figure;
-subplot(2,2,1)
-hold on
-%plot_variance(time,mean(avgBtStSup)-ciStSup,mean(avgBtStSup)+ciStSup,[0 .75 1])
-%plot_variance(time,mean(avgBtShSup)-ciStSup,mean(avgBtShSup)+ciStSup,[1 .75 0])
-plot_variance(time(crop),mean(diffBtSup(:,crop))-cidiffSup(crop),mean(diffBtSup(:,crop))+cidiffSup(crop),[.5 .5 .5])
-plot(time(crop),mean(avgBtStSup(:,crop)),'b',time(crop),mean(avgBtShSup(:,crop)),'r',time(crop),mean(diffBtSup(:,crop)),'k')
-xlim([time(crop(1)) time(crop(end))])
-title('Suprathreshold')
-
-subplot(2,2,2)
-plot_variance(time(crop),mean(diffBtSub(:,crop))-cidiffSub(crop),mean(diffBtSub(:,crop))+cidiffSub(crop),[.5 .5 .5])
-hold on
-plot(time(crop),mean(avgBtStSub(:,crop)),'c',time(crop),mean(avgBtShSub(:,crop)),'m',time(crop),mean(diffBtSub(:,crop)),'k')
-xlim([time(crop(1)) time(crop(end))])
-title('Subthreshold')
+% subplot(2,2,1)
+% hold on
+% %plot_variance(time,mean(avgBtStSup)-ciStSup,mean(avgBtStSup)+ciStSup,[0 .75 1])
+% %plot_variance(time,mean(avgBtShSup)-ciStSup,mean(avgBtShSup)+ciStSup,[1 .75 0])
+% plot_variance(time(crop),mean(diffBtSup(:,crop))-cidiffSup(crop),mean(diffBtSup(:,crop))+cidiffSup(crop),[.5 .5 .5])
+% plot(time(crop),mean(avgBtStSup(:,crop)),'b',time(crop),mean(avgBtShSup(:,crop)),'r',time(crop),mean(diffBtSup(:,crop)),'k')
+% xlim([time(crop(1)) time(crop(end))])
+% title('Suprathreshold')
+% 
+% subplot(2,2,2)
+% plot_variance(time(crop),mean(diffBtSub(:,crop))-cidiffSub(crop),mean(diffBtSub(:,crop))+cidiffSub(crop),[.5 .5 .5])
+% hold on
+% plot(time(crop),mean(avgBtStSub(:,crop)),'c',time(crop),mean(avgBtShSub(:,crop)),'m',time(crop),mean(diffBtSub(:,crop)),'k')
+% xlim([time(crop(1)) time(crop(end))])
+% title('Subthreshold')
 
 subplot(2,2,3)
 plot_variance(time(crop),mean(diffSham(:,crop))-cidiffSham(crop),mean(diffSham(:,crop))+cidiffSham(crop),[.5 .5 .5])
 hold on
-plot(time(crop),mean(avgBtSubSh(:,crop)),'c',time(crop),mean(avgBtSupSh(:,crop)),'m',time(crop),mean(diffSham(:,crop)),'k')
+plot(time(crop),mean(avgBtStSub(:,crop)),'c',time(crop),mean(avgBtShSub(:,crop)),'m',time(crop),mean(diffSham(:,crop)),'k')
 xlim([time(crop(1)) time(crop(end))])
 title('Sham')
 
-subplot(2,2,4)
-plot_variance(time(crop),mean(diffStim(:,crop))-cidiffStim(crop),mean(diffStim(:,crop))+cidiffStim(crop),[.5 .5 .5])
-hold on
-plot(time(crop),mean(avgBtSubSt(:,crop)),'c',time(crop),mean(avgBtSupSt(:,crop)),'m',time(crop),mean(diffStim(:,crop)),'k')
-xlim([time(crop(1)) time(crop(end))])
-title('Stim')
 % figure;
 % subplot(2,1,1)
 % plot(time,avgBtStSup,'b',time,avgBtShSup,'r',time,diffBtSup,'k')

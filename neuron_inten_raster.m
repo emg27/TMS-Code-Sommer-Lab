@@ -6,13 +6,17 @@
 %%color in order to make it easier to see the shift in intensity responses.
 
 % %Clear and set up the workspace
-clear
-[filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
-load([pathname filename])
-close all
+% clear
+% [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
+% load([pathname filename])
+% close all
 
 %Establish your desire values
-date='20140619';%'20150810'; %Date to take the spiking data
+date='20150109';%'20141009';
+notall=0;
+%'20150123';
+
+%'20150123';%'20140625';%'20150810'; %Date to take the spiking data
 stimCond='Stim'; %Set which stimulation condition you are interested in
 neuron=1; %Which cluster will the neuron be in
 N=10; %The number of TMS pulses (trials you would like to show on the plot)
@@ -45,9 +49,17 @@ for n=1:size(fileloc,2)
     else
         continue
     end
+    checkpos=0;
+    if notall==1
+        if inten>=6
+            checkpos=2;
+        elseif inten>=4
+            checkpos=1;
+        end
+    end
     Pulses=block.Pulses(1:N);
     
-    shift=(inten-1)*N;
+    shift=(inten-(1+checkpos))*N;
     figure(raster)
     color=Raster(Pulses,tb,ta,1000*block.times(clusterpos),shift);
     
@@ -69,9 +81,14 @@ for n=1:size(fileloc,2)
     title(num2str(inten*10))
     
     k=k+1;
-    waves=[waves; block.waveforms(clusterpos,:)];
+    %waves=[waves; block.waveforms(clusterpos,:)];
 end
 figure(raster)
 title('Monkey M Single Cell Example')
 ylabel('Intensity Trials')
 xlabel('Time (ms)')
+if notall==1
+    ylim([0 70])
+elseif notall==2
+    ylim([0 80])
+end
