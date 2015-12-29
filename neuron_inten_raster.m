@@ -6,10 +6,10 @@
 %%color in order to make it easier to see the shift in intensity responses.
 
 % %Clear and set up the workspace
-% clear
-% [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
-% load([pathname filename])
-% close all
+clear
+[filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
+load([pathname filename])
+close all
 
 %Establish your desire values
 date='20150109';%'20141009';
