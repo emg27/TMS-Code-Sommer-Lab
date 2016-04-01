@@ -34,7 +34,7 @@ for n=1:length(pulsetime)
     
    point=trial-pulsetime(n);
    if ~isempty(point)
-       pointA=line([point point]', [shift+n-0.9 shift+n-0.1]); hold on
+       pointA=line([point point]', [shift+n-0.9 shift+n-0.1],'Color','k'); hold on
        points=[points pointA'];
    end
     %num_plot(n,1)=text(-time_b-20,[n-.5],sprintf('n=%0.0d',num_spike(n))); %prints number of spikes per trial
