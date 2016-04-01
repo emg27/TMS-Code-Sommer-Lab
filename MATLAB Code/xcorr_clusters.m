@@ -1,16 +1,28 @@
-%close all
-intensity=90; 
-Tstart=500;
-%gauss_size=5;
-%pos=find(normptsh(:,1)<2);% & normptsh(:,2)>=60);% & normptsh(:,2)>intensity-10 & normptsh(:,2)<=intensity);
-pos=find(normptsh(:,1)==1 & normptsh(:,2)>=70);
-words='Stim greater than or equal to 60';
+% clear
+% [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
+% load([pathname filename])
+% close all
+
+% clf
+Tstart = 500;
+Tend = Tstart+150;
+% gauss_size=5;
+
+brainloc = zeros(length(normptsh),1);
+for n = 1:length(normptsh)
+brainloc(n,1) = AreaDate{n,3};
+end
+pos=find(normptsh(:,1)==0 & brainloc(:)==1);
+words='M1 All Sham';
+numgroups = 4;
+
 N=length(pos);
-cutoff=1.6;
+cutoff=1.7;
 
 corrMat=zeros(N);
 
-waves=normptsh(pos,3+gauss_size+Tstart+1:end-gauss_size-400);
+waves=normptsh(pos,3+gauss_size+1+Tstart:3+gauss_size+1+Tend);
+%waves=normptsh(pos,3+gauss_size+Tstart+1:end-gauss_size-400);
 %waves=normptsh(pos,3+gauss_size:end-gauss_size);
 %waves=sigDiff(pos,Tstart+1:end);
 temp=[];
@@ -36,6 +48,7 @@ xlabel(words)
 joy=figure
 joy2=figure
 joy3=figure
+
 k1=0;
 for k=1:max(groups)
 posB=find(groups==k);
@@ -43,18 +56,49 @@ if length(posB)<2
     continue
 end
 k1=k1+1;
+
 figure(joy2)
-subplot(2,3,k1)
+subplot(1,numgroups,k1)
 StShInten=normptsh(pos(posB),1:2);
 Stimpts=StShInten(StShInten(:,1)==1);
 Shampts=StShInten(StShInten(:,1)==0);
 bar([1 0],[length(Stimpts)/sum(normptsh(pos,1)==1),...
     length(Shampts)/sum(normptsh(pos,1)==0)])
 xlabel(words)
-figure(joy3)
-subplot(2,3,k1)
-hist(normptsh(pos(posB),2)+100*normptsh(pos(posB),1),6)
+
+% figure(joy3)
+% subplot(1,numgroups,k1)
+% %hist(normptsh(pos(posB),2)+100*normptsh(pos(posB),1),6)
+% hist(normptsh(pos(posB),2),9)
+% title(['Group ' num2str(k)])
+% axis([0 100 0 70])
+% xlabel(words)
+
+figure(joy)
+subplot(3,numgroups,k1)
+hold on
+imagesc(normptsh(pos(posB),3+gauss_size:end-gauss_size),[-1 1]);
+line([501 501],[0 length(posB)+1],'Color','k')
+title(['Group ' num2str(k)])
+axis([0 1000 0 length(posB)+1])
 xlabel(words)
+
+avgPSTH(k,:)=nanmean(normptsh(pos(posB),3+gauss_size:end-gauss_size));
+subplot(3,numgroups,k1+numgroups)
+hold on
+plot(avgPSTH(k,:),'r')
+plot(1:(tbase+ta),0*(1:(tbase+ta)),'k--')
+line([tbase+1 tbase+1],[-1 1],'Color','k')
+axis([0 1000 -0.5 1])
+title(['Group ' num2str(k)])
+xlabel(words)
+
+subplot(3,numgroups,k1+2*numgroups)
+hist(normptsh(pos(posB),2),9)
+title(['Group ' num2str(k)])
+axis([0 100 0 70])
+xlabel(words)
+
 %Plot the waveforms
 files=cell2mat(AreaDate(pos(posB),6));
 neuron=cell2mat(AreaDate(pos(posB),5));
@@ -93,14 +137,4 @@ neuron=cell2mat(AreaDate(pos(posB),5));
 % %     xlabel([num2str(files(n)) ' ' AreaDate{pos(posB(n)),2}])
 % %     ylim([-1.1 1.1])
 % %     xlim([-1.5 3])
-figure(joy)
-subplot(2,3,k1)
-% figure
-hold on
-imagesc(normptsh(pos(posB),3+gauss_size:end-gauss_size),[-1 1]);
-line([501 501],[0 length(posB)+1],'Color','k')
-title(['Group ' num2str(k)])
-axis([0 1000 0 length(posB)+1])
-xlabel(words)
 end
-

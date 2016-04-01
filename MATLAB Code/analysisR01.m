@@ -33,7 +33,7 @@ for k=g+1:g+size(listing,1);
         eval(['data=V' file '_Ch3'])
         %%Save data into the structure
         s(k).Name=file;
-        s(k).FireRate=1/data.interval;
+        s(k).FireRate=1/data.interval; 
         s(k).times=data.times;
         s(k).clusters=data.codes(:,1);
         s(k).waveforms=data.values;

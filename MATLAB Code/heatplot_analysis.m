@@ -2,10 +2,22 @@ clear
 [filename, pathname]=uigetfile('*.mat')%'oxford_2014.mat';
 load([pathname filename])
 close all
+clf
+
+brainloc = zeros(size(normptsh,1),1);
+for n = 1:size(normptsh,1)
+brainloc(n,1) = AreaDate{n,3};
+end
+
+reds = linspace(0,1,9)';
+% greens = [0:0.25:1 0.75:-0.25:0]';
+greens = zeros(9,1);
+blues = linspace(1,0,9)';
+ cmap = [reds greens blues];
 
 figure
-pSh=find(normptsh(:,1)==0);
-pSt=find(normptsh(:,1)==1);
+pSh=find(normptsh(:,1)==0 & brainloc(:)==1);
+pSt=find(normptsh(:,1)==1& brainloc(:)==1);
 shamps=normptsh(pSh,:);
 stimps=normptsh(pSt,:);
 %shamps=normptsh(normptsh(:,1)==0,:);
@@ -14,10 +26,10 @@ peakpoints=zeros(9,2);
 peaktimes=peakpoints;
 for n=1:9
 pos=find(shamps(:,2)<=n*10 & shamps(:,2)>10*(n-1));
-subplot(4,5,n);imagesc(shamps(pos,3+gauss_size:end-gauss_size),[-1 1])
+subplot(6,3,n);imagesc(shamps(pos,3+gauss_size:end-gauss_size),[-1 1])
 title(['Sham ' num2str(n) '0%'])
 line([tbase+1 tbase+1],[0 length(pos)+1],'Color','k')
-subplot(4,5,n+10)
+subplot(6,3,n+9)
 avgSham(n,:)=nanmean(shamps(pos,3+gauss_size:end-gauss_size));
 avgShamSM(n,:)=smooth(avgSham(n,:),25);
 allsham=shamps(pos,3+gauss_size:end-gauss_size);
@@ -50,10 +62,10 @@ end
 figure
 for n=1:9
 pos=find(stimps(:,2)<=n*10 & stimps(:,2)>10*(n-1));
-subplot(4,5,n);imagesc(stimps(pos,3+gauss_size:end-gauss_size),[-1 1])
+subplot(6,3,n);imagesc(stimps(pos,3+gauss_size:end-gauss_size),[-1 1])
 title(['Stim ' num2str(n) '0%'])
 line([tbase+1 tbase+1],[0 length(pos)+1],'Color','k')
-subplot(4,5,n+10)
+subplot(6,3,n+9)
 avgStim(n,:)=nanmean(stimps(pos,3+gauss_size:end-gauss_size));
 avgStimSM(n,:)=smooth(avgStim(n,:),25);
 allstim=stimps(pos,3+gauss_size:end-gauss_size);
@@ -105,14 +117,18 @@ title('Smooth Peak Points by 25 25 points')
 
 figure
 subplot(2,1,1)
-plot(-50:ta,avgSham(1:9,(tbase+1)-50:(tbase+1)+ta)');hold on
+for p = 1:9
+plot(-50:ta,avgSham(p,(tbase+1)-50:(tbase+1)+ta)','Color',cmap(p,:));hold on
+end
 line([0 0],[-.2 .5],'Color','k')
 %legend('10','20','30','40','50','60','70','80','90')
 title(['Sham, Gauss=' num2str(gauss_size) 'ms'])
 xlim([-50 200])
 %axis([tbase-43 tbase+ta+3 -.15 .4])
 subplot(2,1,2)
-plot(-50:ta,avgStim(1:9,(tbase+1)-50:(tbase+1)+ta)')
+for q = 1:9
+plot(-50:ta,avgStim(q,(tbase+1)-50:(tbase+1)+ta)','Color',cmap(q,:)); hold on
+end
 line([0 0],[-.2 .5],'Color','k')
 legend('10','20','30','40','50','60','70','80','90')
 title(['Stim, Gauss=' num2str(gauss_size) 'ms'])
@@ -120,7 +136,7 @@ title(['Stim, Gauss=' num2str(gauss_size) 'ms'])
 xlim([-50 200])
 
 figure
-subplot(1,5,1:2)
+subplot(1,5,[1 2])
 imagesc(allptsh(pSt,3+gauss_size:end-gauss_size))
 line([tbase+1 tbase+1],[0 length(pSt)+1],'Color','k')
 ylabel('Cells-All Intensities')

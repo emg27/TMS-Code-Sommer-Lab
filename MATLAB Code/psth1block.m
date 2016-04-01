@@ -29,7 +29,7 @@ for n=1:length(pulse)
     
    if b_correct==0
        baseline(n)=mean(trl_fr(n,bin_start_times<-5));
-       trl_fr(n,:)=trl_fr(n,:)-baseline(n);
+       trl_fr(n,:)=trl_fr(n,:) - baseline(n);                 % possibly change from subtraction to division
    elseif b_correct==2
        baseline(n)=mean(trl_fr(n,bin_start_times<-5));
        trl_fr(n,:)=(trl_fr(n,:)-baseline(n))/baseline(n);

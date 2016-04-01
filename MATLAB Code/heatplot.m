@@ -5,7 +5,7 @@ close all
 
 tbase=500; %amount of baseline collected
 ta=500; %amount of time after the TMS pulse
-gauss_size=5;
+gauss_size=3;
 
 counter=0; %Will count the number of cells used 
 allptsh=[]; 
@@ -25,7 +25,7 @@ for k=1:size(s,2)%1:113%size(s,2)
             if length(cluster)>0 & length(cluster)>length(pulses)
                 figure(10)
                 [spk_d,trl_fr,bin_start_times,baseline,mean_trl_fr,binned_spks]=...
-                    psth1block(pulses,tbase+gauss_size,ta+gauss_size, 1000*s(k).times(cluster), gauss_size,0);
+                    psth1block(pulses,tbase+gauss_size,ta+gauss_size,1000*s(k).times(cluster),gauss_size,0);
                 close(10);
                 if size(s(k).Stim,1)>0 & strcmp(s(k).Stim(1),'Stim')==1
                     stim=1;
@@ -49,6 +49,8 @@ for k=1:size(s,2)%1:113%size(s,2)
                 counter=counter+1;
                 AreaDate{counter,1}=s(k).BrainArea;
                 AreaDate{counter,2}=s(k).Name;
+                AreaDate{counter,7}=s(k).Animal;
+                AreaDate{counter,8}=s(k).Blackout;
                 if strcmp(s(k).BrainArea,'FEF')
                     AreaDate{counter,3}=-1;
                 elseif strcmp(s(k).BrainArea,'V1') | strcmp(s(k).BrainArea,'VI')

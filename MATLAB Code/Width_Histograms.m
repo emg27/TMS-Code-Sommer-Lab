@@ -17,7 +17,8 @@ gue=figure
 for n=1:size(s,2)
     if length(s(n).Pulses)>0 
         for g=1:max(s(n).clusters)
-            if s(n).Good(g)~=1 | size(s(n).width,1)==0
+            if size(s(n).width,1)==0
+            % if s(n).Good(g)~=1 | size(s(n).width,1)==0
                 continue
             end
                 try2mak=[];
