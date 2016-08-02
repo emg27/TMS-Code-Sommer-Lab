@@ -7,6 +7,11 @@ clf
 brainloc = zeros(size(normptsh,1),1);
 for n = 1:size(normptsh,1)
 brainloc(n,1) = AreaDate{n,3};
+posIE=find(measure(:,4)==AreaDate{n,6} & measure(:,5)==AreaDate{n,5});
+if size(posIE,1)==1
+    brainloc(n,2)=clts4(posIE);
+    IE(n)=clts2(posIE);
+end
 end
 
 reds = linspace(0,1,9)';
@@ -16,8 +21,8 @@ blues = linspace(1,0,9)';
  cmap = [reds greens blues];
 
 figure
-pSh=find(normptsh(:,1)==0 & brainloc(:)==1);
-pSt=find(normptsh(:,1)==1& brainloc(:)==1);
+pSh=find(normptsh(:,1)==0 & brainloc(:,1)==1 & brainloc(:,2)==4);
+pSt=find(normptsh(:,1)==1& brainloc(:,1)==1 & brainloc(:,2)==4);
 shamps=normptsh(pSh,:);
 stimps=normptsh(pSt,:);
 %shamps=normptsh(normptsh(:,1)==0,:);
