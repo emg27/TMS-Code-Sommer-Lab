@@ -15,6 +15,7 @@ spike=[];
 %2013 Data: 114 to 287
 %2014 Data: 288 to end
 for k=1:size(s,2)%1:113%size(s,2)
+    
     if(length(s(k).Pulses)>0) & median(diff(s(k).Pulses))>4 %& ...
             %size(s(k).Stim,1)>0 & strcmp(s(k).Stim(1),'Stim')==1 &...
             %size(s(k).Intensity,1)>0 & strcmp(s(k).Intensity(1),'90')==1

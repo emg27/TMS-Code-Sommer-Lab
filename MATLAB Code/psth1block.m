@@ -37,7 +37,7 @@ for n=1:length(pulse)
        baseline(n)=NaN;
    end
 end
-mean_trl_fr=mean(trl_fr);
+mean_trl_fr=mean([trl_fr; trl_fr]);
 std_fr=std(mean_trl_fr)./sqrt(size(trl_fr,1));
 
 spk_d=plot(bin_start_times, mean_trl_fr, 'b', 'LineWidth',2.5); hold on
